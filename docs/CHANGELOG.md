@@ -25,3 +25,120 @@
 - Chưa có phase nào trong master plan được triển khai code
 - Dự án hiện ở giai đoạn: **Tài liệu hoàn chỉnh, sẵn sàng bắt đầu Phase 01**
 - Các ngưỡng anomaly trong BRD là giả định hợp lý — có thể điều chỉnh khi có thêm context
+
+---
+
+## [2026-05-12] — Phase 01: Hoàn thành Models
+
+### Đã hoàn thành
+
+- ✅ Tạo `src/include/models/EventType.h` — enum EventType với 9 giá trị (LOGIN, LOGOUT, TOKEN_REFRESH, ACCESS, FAILED_LOGIN, OPEN_APP, DOWNLOAD, ADMIN_ACTION, UNKNOWN_EVENT)
+- ✅ Tạo `src/source/models/EventType.cpp` — hàm `parseEventType()` và `eventTypeToString()`, case-insensitive parsing
+- ✅ Tạo `src/include/models/Location.h` — enum Location với 16 giá trị (US, VN, JP, KR, SG, CN, DE, FR, UK, AU, CA, IN, BR, RU, TH, UNKNOWN_LOCATION)
+- ✅ Tạo `src/source/models/Location.cpp` — hàm `parseLocation()` và `locationToString()`, case-insensitive parsing
+- ✅ Tạo `src/include/models/LogRecord.h` — struct LogRecord với 7 field đầy đủ theo BRD schema
+- ✅ Tạo `src/source/models/LogRecord.cpp` — Constructor, hàm `printRecord()` cho debugging
+- ✅ Cập nhật `src/main.cpp` — test đầu tiên với 3 sample records từ BRD
+- ✅ Kiểm tra compile: g++ -std=c++17 thành công
+- ✅ Kiểm tra memory leak: Valgrind zero leaks
+
+### Ghi chú
+
+- Sử dụng manual string comparison thay vì map lookup (tuân thủ constraint)
+- Hỗ trợ case-insensitive parsing cho EventType và Location
+- Tất cả dữ liệu dùng std::string, không dùng vector/map/set
+- Architecture sẵn sàng cho bước tiếp theo: DataStore + CsvLoader
+- Compile command: `g++ -std=c++17 -Isrc src/main.cpp src/source/models/*.cpp -o main`
+
+---
+
+## [2026-05-12] — Phase 01: Hoàn thành StringUtils + TimeUtils
+
+### Đã hoàn thành
+
+- ✅ Tạo `src/include/utils/StringUtils.h` — 3 hàm utility cho xử lý string
+- ✅ Tạo `src/source/utils/StringUtils.cpp` — Triển khai các hàm:
+  - `split(const string& s, char delim, int& outCount)` → dynamic string array
+  - `trim(const string& s)` → string không khoảng trắng đầu/cuối
+  - `strEquals(const string& a, const string& b)` → case-sensitive comparison
+- ✅ Tạo `src/include/utils/TimeUtils.h` — 3 hàm utility cho xử lý thời gian
+- ✅ Tạo `src/source/utils/TimeUtils.cpp` — Triển khai các hàm:
+  - `epochToReadable(long long epoch)` → "YYYY-MM-DD HH:MM:SS" UTC format
+  - `isOffHours(long long epoch)` → bool (true nếu ngoài 08:00-18:00 UTC)
+  - `getHourUTC(long long epoch)` → int (0-23)
+- ✅ Cập nhật `src/main.cpp` — thêm 9 test case cho toàn bộ utilities
+- ✅ Kiểm tra compile: g++ -std=c++17 thành công, không lỗi
+- ✅ Kiểm tra memory leak: Valgrind zero leaks (14 allocs, 14 frees)
+- ✅ Test split(): 7 tokens từ CSV line chính xác
+- ✅ Test trim(): xóa đúng space/tab đầu/cuối
+- ✅ Test time conversion + isOffHours: các edge case đúng
+
+### Ghi chú
+
+- Sử dụng manual dynamic array (new/delete[]) cho split(), không dùng vector
+- Không dùng strtok, implement split() thủ công
+- Sử dụng gmtime() từ ctime standard library cho UTC conversion
+- Off-hours = hour < 8 || hour >= 18 (ngoài 08:00-18:00)
+- Compile command: `g++ -std=c++17 -Isrc src/main.cpp src/source/models/*.cpp src/source/utils/*.cpp -o main`
+
+---
+
+## [2026-05-13] — Phase 01: Hoàn thành Storage + CLI (Toàn bộ Phase 01)
+
+### Đã hoàn thành
+
+- ✅ Tạo `src/include/storage/DataStore.h` — struct chứa LogRecord\*\* với auto-resize
+- ✅ Tạo `src/source/storage/DataStore.cpp` — Triển khai:
+  - `initDataStore()` — khởi tạo capacity=1000, count=0
+  - `push()` — thêm record, double capacity khi đầy
+  - `get()`, `size()`, `clear()` — truy cập và giải phóng
+  - Không dùng vector, chỉ dùng new/delete[] thủ công
+- ✅ Tạo `src/include/storage/Validator.h` — validate LogRecord theo BRD
+- ✅ Tạo `src/source/storage/Validator.cpp` — Triển khai:
+  - `isValid()` — kiểm tra 7 field: string khác rỗng, event_type/location != UNKNOWN, timestamp > 0
+  - Ghi warning ra stderr cho dòng invalid, không crash
+- ✅ Tạo `src/include/storage/CsvLoader.h` — struct LoadResult, hàm load()
+- ✅ Tạo `src/source/storage/CsvLoader.cpp` — Triển khai:
+  - Đọc CSV line-by-line, skip header, skip dòng != 7 field
+  - Dùng StringUtils::split() để parse, Validator::isValid() để lọc
+  - Trả về LoadResult với loaded và skipped count
+- ✅ Tạo `src/include/storage/Deduplicator.h` — deduplicate()
+- ✅ Tạo `src/source/storage/Deduplicator.cpp` — Triển khai:
+  - So sánh tất cả 7 field của 2 LogRecord
+  - Rebuild DataStore loại trừ bản trùng, trả về số đã xóa
+  - Giải phóng bộ nhớ đúng cách (new/delete[])
+- ✅ Tạo `src/include/cli/Printer.h` — printInfo(), printError(), printWarning()
+- ✅ Tạo `src/source/cli/Printer.cpp` — In ra stdout/stderr với prefix
+- ✅ Cập nhật `src/main.cpp` — CLI loop với 3 lệnh:
+  - `load <filepath>` → CsvLoader + Deduplicator, in "[INFO] Loaded X records (Y skipped, Z removed)"
+  - `help` → liệt kê lệnh
+  - `exit` → clear() store, thoát
+- ✅ Tạo test files: `src/data/test.csv` (9 dòng, 2 trùng), `src/data/test_invalid.csv` (5 dòng invalid)
+- ✅ Test CLI load thành công: 9 records, 2 duplicates removed
+- ✅ Test error handling: invalid event_type/location/timestamp, file không tồn tại → không crash
+- ✅ Test memory leak với valgrind: **ZERO leaks** (54 allocs, 54 frees)
+
+### Ghi chú (Phase 01)
+
+- CMakeLists.txt hỗ trợ Debug/Release build, auto-glob \*.cpp từ src/source/
+- Tất cả module theo ràng buộc: không dùng vector/map/set, chỉ dùng dynamic array thủ công
+- Deduplicator chạy O(n²) so sánh nhưng đủ cho 10k dòng midterm
+- CLI chạy interactive, có thể kiểm tra help và exit không crash
+- Build: `cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build`
+- Binary: `./release/bin/halo` (hoặc `./debug/bin/halo` cho debug)
+- **Phase 01 — HOÀN THÀNH ✅**: Toàn bộ 10 task trong checklist đã xong
+
+### Trạng thái Phase 01
+
+| Task                                                | Status | Notes                                    |
+| --------------------------------------------------- | ------ | ---------------------------------------- |
+| Models (LogRecord, EventType, Location)             | ✅     | 9 giá trị event, 16 location             |
+| StringUtils (split, trim, strEquals)                | ✅     | Manual implementation, no strtok         |
+| TimeUtils (epochToReadable, isOffHours, getHourUTC) | ✅     | UTC-based, gmtime()                      |
+| DataStore (dynamic array)                           | ✅     | Auto-resize 2x, max ~2M records on 1GB   |
+| Validator                                           | ✅     | 7 field validation, stderr warnings      |
+| CsvLoader                                           | ✅     | Line-by-line, skip header + invalid rows |
+| Deduplicator                                        | ✅     | 7-field equality, O(n²) but acceptable   |
+| Printer (CLI output)                                | ✅     | [INFO/ERROR/WARNING] prefixes            |
+| CLI Loop (load/help/exit)                           | ✅     | Interactive, basic commands              |
+| Memory test (valgrind)                              | ✅     | Zero leaks for all scenarios             |

@@ -65,6 +65,7 @@
 - Không dùng magic number — khai báo constant có tên
 - Không dùng `goto`
 - Mọi hàm nhận con trỏ phải kiểm tra `nullptr` đầu vào
+- Không dùng using namespace std, #pragma once
 
 ---
 
@@ -116,6 +117,7 @@ Halo-cyper-access-engine/
 │   │   ├── session/
 │   │   ├── cli/
 │   │   └── utils/
+│   └── data/                   ← CSV test files
 ├── docs/
 │   ├── brief.md
 │   ├── BRD.md
@@ -126,7 +128,6 @@ Halo-cyper-access-engine/
 │       └── ...
 ├── release/                ← Binary nộp bài
 │   └── halo.exe
-├── data/                   ← CSV test files
 └── README.md
 ```
 

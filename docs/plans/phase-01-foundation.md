@@ -63,7 +63,7 @@
 
 ### Lệnh CLI Phase 01
 
-```
+```bash
 load <filepath>    — Load CSV, in: "Loaded X records (Y skipped, Z duplicates removed)"
 exit               — Giải phóng bộ nhớ, thoát chương trình
 help               — Liệt kê lệnh
@@ -73,7 +73,7 @@ help               — Liệt kê lệnh
 
 ## Expected Output
 
-```
+```bash
 > load data/sample.csv
 [INFO] Loaded 9847 records (153 skipped, 12 duplicates removed)
 [INFO] Ready.
@@ -88,7 +88,7 @@ help               — Liệt kê lệnh
 
 ### Test 1: Load file hợp lệ
 
-```
+```bash
 1. Chuẩn bị file data/sample.csv có 100 dòng valid
 2. Chạy: load data/sample.csv
 3. Expect: "Loaded 100 records (0 skipped, 0 duplicates removed)"
@@ -96,28 +96,28 @@ help               — Liệt kê lệnh
 
 ### Test 2: File có dòng invalid
 
-```
+```bash
 1. Thêm vào CSV: dòng thiếu cột, timestamp âm, event_type lạ
 2. Expect: số skipped tăng lên đúng, chương trình không crash
 ```
 
 ### Test 3: File có dòng trùng
 
-```
+```bash
 1. Copy y nguyên 5 dòng vào cuối file
 2. Expect: "5 duplicates removed"
 ```
 
 ### Test 4: File không tồn tại
 
-```
+```bash
 1. Chạy: load data/khongco.csv
 2. Expect: "[ERROR] File not found." — chương trình tiếp tục chạy
 ```
 
 ### Test 5: Memory leak check
 
-```
+```bash
 1. Load file → exit
 2. Nếu dùng valgrind: valgrind --leak-check=full ./halo
 3. Expect: "All heap blocks were freed"
@@ -158,7 +158,7 @@ void resize(DataStore* store) {
 
 ### Dedup Strategy
 
-```
+```bash
 Option A (đơn giản): Sort → so sánh liên tiếp — O(n log n)
 Option B: Hash toàn bộ record → O(n) nhưng phức tạp hơn
 → Dùng Option A cho Phase 01, tối ưu sau nếu cần
@@ -168,7 +168,7 @@ Option B: Hash toàn bộ record → O(n) nhưng phức tạp hơn
 
 ## Dependency
 
-```
+```bash
 Phase 01 không phụ thuộc phase nào trước
 Phase 02, 03, 04, 05 đều phụ thuộc Phase 01
 ```

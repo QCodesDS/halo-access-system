@@ -4,7 +4,7 @@
 
 | Phase | Tên                                          | Deadline   | Trạng thái      |
 | ----- | -------------------------------------------- | ---------- | --------------- |
-| 01    | Foundation — Models + Storage + CLI skeleton | Ngày 1–3   | ⬜ Chưa bắt đầu |
+| 01    | Foundation — Models + Storage + CLI skeleton | Ngày 1–3   | ✅ Hoàn thành   |
 | 02    | Indexing — Hash Table + Sorted Index         | Ngày 4–5   | ⬜ Chưa bắt đầu |
 | 03    | Query Engine (Midterm)                       | Ngày 6–8   | ⬜ Chưa bắt đầu |
 | 04    | Scale Up — 1M rows + Memory audit            | Ngày 9–10  | ⬜ Chưa bắt đầu |
@@ -15,7 +15,7 @@
 
 ## Trạng thái ký hiệu
 
-```
+```bash
 ⬜ Chưa bắt đầu
 🔄 Đang làm
 ✅ Hoàn thành
@@ -28,16 +28,18 @@
 
 **File chi tiết:** `phase-01-foundation.md`
 
-- [ ] Định nghĩa `struct LogRecord` với 7 field
-- [ ] Định nghĩa `enum EventType` và `enum Location`
-- [ ] Viết `CsvLoader` — đọc và parse từng dòng CSV
-- [ ] Viết `Validator` — validate từng field, skip dòng lỗi
-- [ ] Viết `DataStore` — dynamic array thủ công với realloc
-- [ ] Viết `Deduplicator` — loại bỏ dòng trùng lặp hoàn toàn
-- [ ] Viết `StringUtils` — split, trim, compare
-- [ ] Viết `TimeUtils` — parse timestamp, format datetime
-- [ ] CLI skeleton: lệnh `load` và `exit`
-- [ ] Test: load 10k dòng thành công, không crash, không leak
+**Status: ✅ HOÀN THÀNH**
+
+- [x] Định nghĩa `struct LogRecord` với 7 field
+- [x] Định nghĩa `enum EventType` và `enum Location`
+- [x] Viết `CsvLoader` — đọc và parse từng dòng CSV
+- [x] Viết `Validator` — validate từng field, skip dòng lỗi
+- [x] Viết `DataStore` — dynamic array thủ công với realloc
+- [x] Viết `Deduplicator` — loại bỏ dòng trùng lặp hoàn toàn
+- [x] Viết `StringUtils` — split, trim, compare
+- [x] Viết `TimeUtils` — parse timestamp, format datetime
+- [x] CLI skeleton: lệnh `load` và `exit`
+- [x] Test: load 10k dòng thành công, không crash, không leak
 
 ---
 
