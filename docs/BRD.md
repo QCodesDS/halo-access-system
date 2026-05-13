@@ -31,7 +31,7 @@
 
 **Ví dụ:**
 
-```
+```bash
 user_id,device_id,app_id,resource_id,event_type,location,timestamp
 U007,D018,APP003,R025,DOWNLOAD,SG,1713225863
 U005,D025,APP018,R018,OPEN_APP,CN,1713108845
@@ -59,7 +59,7 @@ U005,D025,APP018,R018,OPEN_APP,CN,1713108845
 
 ### FR-03: Query — User Journey
 
-```
+```bash
 Input:  user_id, timestamp_start, timestamp_end
 Output: Danh sách các event trong khoảng thời gian, format:
         [timestamp] device_id → app_id → resource_id (event_type, location)
@@ -68,7 +68,7 @@ Sắp xếp: theo timestamp tăng dần
 
 ### FR-04: Query — Resource Journey
 
-```
+```bash
 Input:  resource_id, timestamp_start, timestamp_end
 Output: Danh sách các event trong khoảng thời gian, format:
         [timestamp] user_id → device_id → app_id (event_type, location)
@@ -77,7 +77,7 @@ Sắp xếp: theo timestamp tăng dần
 
 ### FR-05: Top 10 Resources
 
-```
+```bash
 Input:  timestamp_start, timestamp_end
 Output: Top 10 resource_id được truy cập nhiều nhất, kèm số lần
         Rank | resource_id | count
@@ -157,7 +157,7 @@ std::cout, std::cin
 
 ## 6. Business Logic — Session Definition
 
-```
+```bash
 Session bắt đầu: khi gặp event LOGIN
 Session kết thúc: khi gặp LOGOUT, HOẶC không có event trong 30 phút
 Nếu không có LOGIN rõ ràng: session bắt đầu từ event đầu tiên của ngày
@@ -167,7 +167,7 @@ Nếu không có LOGIN rõ ràng: session bắt đầu từ event đầu tiên c
 
 ## 7. CLI Interface
 
-```
+```bash
 Commands:
   load <filepath>                           Load CSV file
   query user <user_id> <t_start> <t_end>   FR-03

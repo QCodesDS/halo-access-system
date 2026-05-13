@@ -142,3 +142,57 @@
 | Printer (CLI output)                                | ✅     | [INFO/ERROR/WARNING] prefixes            |
 | CLI Loop (load/help/exit)                           | ✅     | Interactive, basic commands              |
 | Memory test (valgrind)                              | ✅     | Zero leaks for all scenarios             |
+
+---
+
+## [2026-05-13] — Phase 02: Hoàn thành Indexing
+
+### Đã hoàn thành
+
+- ✅ Tạo `src/include/indexing/HashTable.h` — struct HashNode + HashTable, separate chaining với linked list
+- ✅ Tạo `src/source/indexing/HashTable.cpp` — Triển khai:
+  - `hashFunction()` — polynomial rolling hash (prime 31) với modulo tránh overflow
+  - `initHashTable()` — khởi tạo buckets array
+  - `insertHash()` — insert vào linked list, resize values array nếu cần
+  - `lookupHash()` — traverse chain, lookup by string key
+  - `clearHashTable()` — giải phóng toàn bộ buckets, nodes, values arrays
+- ✅ Tạo `src/include/indexing/HashIndex.h` — struct HashIndex với 3 hash tables (byUser, byDevice, byResource)
+- ✅ Tạo `src/source/indexing/HashIndex.cpp` — Triển khai:
+  - `buildHashIndex()` — loop records, insert vào 3 tables
+  - `getByUser()`, `getByDevice()`, `getByResource()` — lookup wrappers
+  - `clearHashIndex()` — clear 3 tables
+- ✅ Tạo `src/include/indexing/SortedIndex.h` — struct SortedIndex, binary search signatures
+- ✅ Tạo `src/source/indexing/SortedIndex.cpp` — Triển khai:
+  - `buildSortedIndex()` — copy pointers từ DataStore vào array, merge sort theo timestamp
+  - `mergeSort()` — stable recursive merge sort (O(n log n))
+  - `merge()` — merge helper (dùng `<=` để bảo toàn stability)
+  - `binarySearchStart()` — find first index với timestamp >= t
+  - `binarySearchEnd()` — find last index với timestamp <= t
+  - `clearSortedIndex()` — **CHỈ delete array, KHÔNG delete LogRecord\* (ownership = DataStore)**
+- ✅ Tạo `src/include/indexing/IndexManager.h` — struct IndexManager, build/clear functions
+- ✅ Tạo `src/source/indexing/IndexManager.cpp` — Triển khai:
+  - `buildAllIndexes()` — build both HashIndex + SortedIndex, auto-select tableSize (20011 cho ≤10k, 1999993 cho ≤1M)
+  - Print "[INFO] Indexes built in Xs" message after build
+  - `clearAllIndexes()` — clear cả hai index
+- ✅ Cập nhật `src/main.cpp`:
+  - Include `<indexing/IndexManager.h>`
+  - Init global `IndexManager indexMgr`
+  - Call `buildAllIndexes()` sau deduplicate nếu store.count > 0
+  - Call `clearAllIndexes()` trong exit command trước khi clear store
+- ✅ Rebuild CMake project từ scratch — clean build pass
+- ✅ Manual test: load test.csv (9 records) → "[INFO] Indexes built in 0.00s" appears ✓
+- ✅ Manual test: load 2k dataset → hash lookup verify (14 records for U164, 44 for R048) ✓
+- ✅ Manual test: sorted index binary search (idx [0, 1999] for timestamp range) ✓
+- ✅ Valgrind 0 leaks: test.csv (106 allocs, 106 frees), 2k dataset (13,839 allocs/frees)
+
+### Ghi chú
+
+- Polynomial hash function sử dụng prime 31 + large modulo (1e9+7) để tránh overflow
+- Separate chaining + dynamic values arrays cho efficient bucket handling
+- Merge sort STABLE — quan trọng cho consistent time-range queries
+- SortedIndex **không sở hữu** LogRecord\* — tránh double-free
+- TableSize selection logic:
+  - ≤10k records: prime 20011 (load factor ≈ 0.5)
+  - ≤1M records: prime 1999993 (load factor ≈ 0.5)
+- Build time O(n log n) dominated by merge sort
+- Performance: 2k records indexed in 0.03s, 0 memory leaks

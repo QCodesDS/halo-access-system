@@ -96,6 +96,11 @@ int main()
             {
                 delete[] argv;
             }
+            // Clear indexes
+            if (indexMgr.isBuilt)
+            {
+                clearAllIndexes(indexMgr);
+            }
             clear(store);
             break;
         }

@@ -5,7 +5,7 @@
 | Phase | Tên                                          | Deadline   | Trạng thái      |
 | ----- | -------------------------------------------- | ---------- | --------------- |
 | 01    | Foundation — Models + Storage + CLI skeleton | Ngày 1–3   | ✅ Hoàn thành   |
-| 02    | Indexing — Hash Table + Sorted Index         | Ngày 4–5   | ⬜ Chưa bắt đầu |
+| 02    | Indexing — Hash Table + Sorted Index         | Ngày 4–5   | ✅ Hoàn thành   |
 | 03    | Query Engine (Midterm)                       | Ngày 6–8   | ⬜ Chưa bắt đầu |
 | 04    | Scale Up — 1M rows + Memory audit            | Ngày 9–10  | ⬜ Chưa bắt đầu |
 | 05    | Anomaly Detection (Final)                    | Ngày 11–17 | ⬜ Chưa bắt đầu |
@@ -47,13 +47,17 @@
 
 **File chi tiết:** `phase-02-indexing.md`
 
-- [ ] Viết `HashTable` thủ công (separate chaining với linked list)
-- [ ] `HashIndex` theo `user_id` → mảng LogRecord\*
-- [ ] `HashIndex` theo `device_id` → mảng LogRecord\*
-- [ ] `HashIndex` theo `resource_id` → mảng LogRecord\*
-- [ ] `SortedIndex` — mảng con trỏ sorted by timestamp (merge sort)
-- [ ] `IndexManager` — khởi tạo, rebuild, giải phóng tất cả index
-- [ ] Test: lookup user → đúng records, thời gian lookup O(1) avg
+**Status: ✅ HOÀN THÀNH**
+
+- [x] Viết `HashTable` thủ công (separate chaining với linked list)
+- [x] `HashIndex` theo `user_id` → mảng LogRecord\*
+- [x] `HashIndex` theo `device_id` → mảng LogRecord\*
+- [x] `HashIndex` theo `resource_id` → mảng LogRecord\*
+- [x] `SortedIndex` — mảng con trỏ sorted by timestamp (merge sort)
+- [x] `IndexManager` — khởi tạo, rebuild, giải phóng tất cả index
+- [x] Test: lookup user → đúng records, thời gian lookup O(1) avg
+- [x] Test: binary search time range → correct indices
+- [x] Valgrind: 0 memory leaks
 
 ---
 
