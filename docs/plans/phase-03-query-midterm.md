@@ -1,4 +1,5 @@
 # Phase 03 — Query Engine (Midterm)
+
 # FR-03, FR-04, FR-05
 
 **Thời lượng:** 3 ngày
@@ -10,12 +11,14 @@
 ## Checklist
 
 ### Query Implementations
+
 - [ ] `src/query/UserJourneyQuery.h/.cpp` — FR-03
 - [ ] `src/query/ResourceJourneyQuery.h/.cpp` — FR-04
 - [ ] `src/query/TopResourceQuery.h/.cpp` — FR-05
 - [ ] `src/query/QueryEngine.h/.cpp` — dispatcher từ CLI
 
 ### CLI Integration
+
 - [ ] Lệnh: `query user <uid> <t_start> <t_end>`
 - [ ] Lệnh: `query resource <rid> <t_start> <t_end>`
 - [ ] Lệnh: `top resources <t_start> <t_end>`
@@ -26,7 +29,8 @@
 ## Expected Output
 
 ### query user U007 1713000000 1713999999
-```
+
+```bash
 User Journey: U007 | 2024-04-13 to 2024-04-24
 ─────────────────────────────────────────────────────────────
 Timestamp           Device   App      Resource   Event        Location
@@ -39,7 +43,8 @@ Total: 23 events
 ```
 
 ### top resources 1713000000 1713999999
-```
+
+```bash
 Top 10 Resources | 2024-04-13 to 2024-04-24
 ──────────────────────────────
 Rank  Resource   Count
@@ -55,7 +60,8 @@ Rank  Resource   Count
 ## Manual Test Guide
 
 ### Test 1: User journey — user tồn tại
-```
+
+```bash
 1. load data/sample.csv
 2. query user U007 0 9999999999
 3. Expect: danh sách event của U007, sorted by timestamp
@@ -63,26 +69,30 @@ Rank  Resource   Count
 ```
 
 ### Test 2: User journey — user không tồn tại
-```
+
+```bash
 1. query user U999 0 9999999999
 2. Expect: "[INFO] No events found for user U999."
 ```
 
 ### Test 3: Time range lọc đúng
-```
+
+```bash
 1. query user U007 1713225863 1713225863  (exact 1 timestamp)
 2. Expect: đúng 1 dòng
 ```
 
 ### Test 4: Top resources chính xác
-```
+
+```bash
 1. Đếm thủ công bằng: grep "R025" sample.csv | wc -l
 2. So sánh với output của top resources
 3. Expect: khớp nhau
 ```
 
 ### Test 5: Memory sau query
-```
+
+```bash
 Sau mỗi query, bộ nhớ intermediate phải được giải phóng.
 Chạy 10 query liên tiếp → memory usage không tăng liên tục.
 ```
@@ -92,6 +102,7 @@ Chạy 10 query liên tiếp → memory usage không tăng liên tục.
 ## Kỹ thuật quan trọng
 
 ### Count Map thủ công (cho Top Resources)
+
 ```cpp
 // Không dùng std::map
 // Tự cài đặt bằng dynamic array of {key, count} pairs
@@ -105,6 +116,7 @@ struct CountEntry {
 ```
 
 ### Filter trong time range
+
 ```cpp
 // Dùng SortedIndex.binarySearchStart/End để tìm range
 // Sau đó filter thêm theo user_id từ kết quả

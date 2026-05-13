@@ -6,7 +6,7 @@
 | ----- | -------------------------------------------- | ---------- | --------------- |
 | 01    | Foundation — Models + Storage + CLI skeleton | Ngày 1–3   | ✅ Hoàn thành   |
 | 02    | Indexing — Hash Table + Sorted Index         | Ngày 4–5   | ✅ Hoàn thành   |
-| 03    | Query Engine (Midterm)                       | Ngày 6–8   | ⬜ Chưa bắt đầu |
+| 03    | Query Engine (Midterm)                       | Ngày 6–8   | ✅ Hoàn thành   |
 | 04    | Scale Up — 1M rows + Memory audit            | Ngày 9–10  | ⬜ Chưa bắt đầu |
 | 05    | Anomaly Detection (Final)                    | Ngày 11–17 | ⬜ Chưa bắt đầu |
 | 06    | Polish + Docs + Submit                       | Ngày 18–21 | ⬜ Chưa bắt đầu |
@@ -65,14 +65,16 @@
 
 **File chi tiết:** `phase-03-query-midterm.md`
 
-- [ ] `UserJourneyQuery` (FR-03): filter by user + time range
-- [ ] `ResourceJourneyQuery` (FR-04): filter by resource + time range
-- [ ] `TopResourceQuery` (FR-05): count map thủ công, top 10
-- [ ] `QueryEngine` — dispatcher nhận lệnh từ CLI
-- [ ] `Printer` — format và in kết quả dạng bảng
-- [ ] CLI: lệnh `query user`, `query resource`, `top resources`
-- [ ] Test: đúng kết quả, đúng thứ tự, edge case empty
-- [ ] **[ MIDTERM SUBMISSION ]**
+**Status: ✅ HOÀN THÀNH**
+
+- [x] `UserJourneyQuery` (FR-03): filter by user + time range
+- [x] `ResourceJourneyQuery` (FR-04): filter by resource + time range
+- [x] `TopResourceQuery` (FR-05): count map thủ công, top 10
+- [x] `QueryEngine` — dispatcher nhận lệnh từ CLI
+- [x] `Printer` — format và in kết quả dạng bảng
+- [x] CLI: lệnh `query user`, `query resource`, `top resources`
+- [x] Test: đúng kết quả, đúng thứ tự, edge case empty
+- [x] **[ MIDTERM SUBMISSION ]** ← Ready
 
 ---
 

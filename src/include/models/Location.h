@@ -1,33 +1,56 @@
+/**
+ * @file        Location.h
+ * @brief       Định nghĩa các mã quốc gia / khu vực địa lý.
+ *
+ * Enum này được sử dụng để ghi nhận vị trí địa lý phát sinh sự kiện
+ * trong hệ thống log an ninh.
+ *
+ * @author      QCodesDS
+ * @date        2026-05-12
+ * @version     1.0
+ */
+
 #ifndef LOCATION_H
 #define LOCATION_H
 
 #include <string>
 
-// Enum representing geographic locations
+/**
+ * @enum Location
+ * @brief Các quốc gia / khu vực địa lý được hỗ trợ trong hệ thống.
+ */
 enum Location
 {
-    US,
-    VN,
-    JP,
-    KR,
-    SG,
-    CN,
-    DE,
-    FR,
-    UK,
-    AU,
-    CA,
-    IN,
-    BR,
-    RU,
-    TH,
-    UNKNOWN_LOCATION
+    US,              ///< Hoa Kỳ
+    VN,              ///< Việt Nam
+    JP,              ///< Nhật Bản
+    KR,              ///< Hàn Quốc
+    SG,              ///< Singapore
+    CN,              ///< Trung Quốc
+    DE,              ///< Đức
+    FR,              ///< Pháp
+    UK,              ///< Vương quốc Anh
+    AU,              ///< Úc
+    CA,              ///< Canada
+    IN,              ///< Ấn Độ
+    BR,              ///< Brazil
+    RU,              ///< Nga
+    TH,              ///< Thái Lan
+    UNKNOWN_LOCATION ///< Không xác định
 };
 
-// Convert string to Location enum
+/**
+ * @brief Chuyển chuỗi thành Location (không phân biệt hoa thường).
+ * @param s Chuỗi mã quốc gia (ví dụ: "VN", "US", "JP")
+ * @return Location tương ứng, UNKNOWN_LOCATION nếu không khớp
+ */
 Location parseLocation(const std::string &s);
 
-// Convert Location enum to string
+/**
+ * @brief Chuyển Location thành chuỗi string.
+ * @param loc Mã vị trí địa lý
+ * @return Tên mã quốc gia dưới dạng string
+ */
 std::string locationToString(Location loc);
 
 #endif // LOCATION_H

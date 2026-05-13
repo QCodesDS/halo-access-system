@@ -1,3 +1,10 @@
+/**
+ * @file        Printer.cpp
+ * @brief       Implementation của các hàm in thông báo console.
+ * @author      QCodesDS
+ * @date        2026-05-13
+ */
+
 #include "cli/Printer.h"
 #include <iostream>
 

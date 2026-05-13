@@ -1,4 +1,5 @@
 # Phase 05 — Anomaly Detection (Final)
+
 # Threshold + Behavior + Session + Advanced
 
 **Thời lượng:** 7 ngày
@@ -10,6 +11,7 @@
 ## Checklist
 
 ### Session Builder (prereq cho SessionDetector)
+
 - [ ] `src/session/SessionBuilder.h/.cpp`
   - Group events theo user_id, sort by timestamp
   - Session bắt đầu: LOGIN hoặc event đầu tiên của chuỗi
@@ -17,6 +19,7 @@
   - Output: mảng `Session*` mỗi user
 
 ### Threshold Detector
+
 - [ ] `src/anomaly/ThresholdDetector.h/.cpp`
   - [ ] A01: user dùng > 3 device khác nhau trong 60 phút
   - [ ] A02: user có > 5 FAILED_LOGIN liên tiếp (không xen event thành công)
@@ -24,17 +27,20 @@
   - [ ] A04: event ngoài 08:00–18:00 UTC
 
 ### Behavior Detector
+
 - [ ] `src/anomaly/BehaviorDetector.h/.cpp`
   - [ ] A05: user xuất hiện 2+ location khác nhau trong 120 phút
   - [ ] A06: user đổi location > 3 lần trong 60 phút
 
 ### Session Detector
+
 - [ ] `src/anomaly/SessionDetector.h/.cpp`
   - [ ] A07: phiên > 8 tiếng liên tục
   - [ ] A08: user tạo > 5 phiên trong 60 phút
   - [ ] A09: trong 1 phiên có ADMIN_ACTION → DOWNLOAD trong 10 phút
 
 ### Anomaly Engine
+
 - [ ] `src/anomaly/AnomalyEngine.h/.cpp`
   - Gọi tất cả detector, tổng hợp kết quả
   - Dedup: cùng user + cùng loại anomaly + cùng time window → 1 entry
@@ -42,11 +48,13 @@
   - Giải phóng toàn bộ sau khi in xong
 
 ### Advanced Detector (Bonus)
+
 - [ ] `src/anomaly/AdvancedDetector.h/.cpp`
   - [ ] A10: ≥ 5 FAILED_LOGIN liên tiếp → cuối cùng LOGIN thành công
   - [ ] A11: user không activity > 7 ngày → đột ngột > 20 event trong 1 giờ
 
 ### CLI
+
 - [ ] `detect anomaly` — chạy tất cả
 - [ ] `detect anomaly --type=threshold`
 - [ ] `detect anomaly --type=behavior`
@@ -57,7 +65,7 @@
 
 ## Expected Output
 
-```
+```bash
 > detect anomaly
 [INFO] Running anomaly detection on 1,000,000 events...
 
@@ -80,21 +88,24 @@ Total anomalies: 5 | Detection time: 2.34s
 ## Manual Test Guide
 
 ### Test A01: Multi-device
-```
+
+```bash
 1. Inject 4 events: cùng user, 4 device khác nhau, trong 30 phút
 2. detect anomaly --type=threshold
 3. Expect: MULTI_DEVICE_LOGIN xuất hiện cho user đó
 ```
 
 ### Test A05: Impossible travel
-```
+
+```bash
 1. Inject: U999, VN, timestamp T
 2. Inject: U999, US, timestamp T + 3600 (1 tiếng sau)
 3. Expect: IMPOSSIBLE_TRAVEL flagged (VN → US không thể trong 1h)
 ```
 
 ### Test A09: Dangerous sequence
-```
+
+```bash
 1. Inject: U999, ADMIN_ACTION, timestamp T
 2. Inject: U999, DOWNLOAD, timestamp T + 300 (5 phút sau)
 3. Trong cùng session
@@ -102,7 +113,8 @@ Total anomalies: 5 | Detection time: 2.34s
 ```
 
 ### Test Memory
-```
+
+```bash
 1. detect anomaly (chạy toàn bộ)
 2. detect anomaly (chạy lần 2)
 3. Memory usage phải ổn định, không tăng
@@ -111,6 +123,7 @@ Total anomalies: 5 | Detection time: 2.34s
 ---
 
 ## Ngưỡng cấu hình (Constants)
+
 ```cpp
 // src/anomaly/AnomalyConfig.h
 const int    MAX_DEVICES_PER_HOUR    = 3;
@@ -131,6 +144,7 @@ const int    BURST_EVENTS_PER_HOUR   = 20;
 ---
 
 ## Definition of Done
+
 - [ ] Tất cả A01–A09 detect đúng với test cases
 - [ ] A10, A11 hoạt động (bonus)
 - [ ] Memory giải phóng sau mỗi lần detect

@@ -1,10 +1,25 @@
+/**
+ * @file        EventType.cpp
+ * @brief       Implementation của các hàm chuyển đổi cho EventType.
+ * @author      QCodesDS
+ * @date        2026-05-12
+ */
+
 #include "models/EventType.h"
 
-// Helper function for case-insensitive string comparison
+// ================================================================================
+//  Helper functions
+// ================================================================================
+
+/**
+ * @brief So sánh hai chuỗi không phân biệt hoa thường.
+ * @note Hàm nội bộ, chỉ dùng trong file này.
+ */
 static bool streq(const std::string &a, const std::string &b)
 {
     if (a.length() != b.length())
         return false;
+
     for (size_t i = 0; i < a.length(); ++i)
     {
         char ca = (a[i] >= 'a' && a[i] <= 'z') ? a[i] - ('a' - 'A') : a[i];
@@ -14,6 +29,10 @@ static bool streq(const std::string &a, const std::string &b)
     }
     return true;
 }
+
+// ================================================================================
+//  Public functions
+// ================================================================================
 
 EventType parseEventType(const std::string &s)
 {
@@ -33,6 +52,7 @@ EventType parseEventType(const std::string &s)
         return DOWNLOAD;
     if (streq(s, "ADMIN_ACTION"))
         return ADMIN_ACTION;
+
     return UNKNOWN_EVENT;
 }
 

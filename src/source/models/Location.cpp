@@ -1,10 +1,25 @@
+/**
+ * @file        Location.cpp
+ * @brief       Implementation của các hàm chuyển đổi cho Location.
+ * @author      QCodesDS
+ * @date        2026-05-12
+ */
+
 #include "models/Location.h"
 
-// Helper function for case-insensitive string comparison
+// ================================================================================
+//  Helper functions
+// ================================================================================
+
+/**
+ * @brief So sánh hai chuỗi không phân biệt hoa thường.
+ * @note Hàm static nội bộ, chỉ sử dụng trong file này.
+ */
 static bool streq(const std::string &a, const std::string &b)
 {
     if (a.length() != b.length())
         return false;
+
     for (size_t i = 0; i < a.length(); ++i)
     {
         char ca = (a[i] >= 'a' && a[i] <= 'z') ? a[i] - ('a' - 'A') : a[i];
@@ -14,6 +29,10 @@ static bool streq(const std::string &a, const std::string &b)
     }
     return true;
 }
+
+// ================================================================================
+//  Public functions
+// ================================================================================
 
 Location parseLocation(const std::string &s)
 {
@@ -47,6 +66,7 @@ Location parseLocation(const std::string &s)
         return RU;
     if (streq(s, "TH"))
         return TH;
+
     return UNKNOWN_LOCATION;
 }
 

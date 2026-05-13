@@ -1,4 +1,5 @@
 # Phase 02 — Indexing
+
 # Hash Table + Sorted Index
 
 **Thời lượng:** 2 ngày
@@ -10,30 +11,34 @@
 ## Checklist
 
 ### Hash Table (tự cài đặt)
+
 - [ ] `src/indexing/HashTable.h/.cpp`
   - Separate chaining: mỗi bucket là một linked list
   - Hash function: polynomial rolling hash cho string key
   - `insert(key, value*)` — thêm con trỏ vào bucket tương ứng
-  - `lookup(key)` → trả về linked list các value*
+  - `lookup(key)` → trả về linked list các value\*
   - `clear()` — giải phóng toàn bộ
 
 ### Hash Index
+
 - [ ] `src/indexing/HashIndex.h/.cpp`
   - `buildByUser(DataStore& store)` — index: user_id → [LogRecord*]
   - `buildByDevice(DataStore& store)` — index: device_id → [LogRecord*]
   - `buildByResource(DataStore& store)` — index: resource_id → [LogRecord*]
-  - `getByUser(const string& uid)` → array of LogRecord*
+  - `getByUser(const string& uid)` → array of LogRecord\*
   - `clear()` — giải phóng index
 
 ### Sorted Index
+
 - [ ] `src/indexing/SortedIndex.h/.cpp`
-  - Mảng LogRecord* được sắp xếp theo `timestamp` tăng dần
+  - Mảng LogRecord\* được sắp xếp theo `timestamp` tăng dần
   - Dùng merge sort (stable, O(n log n))
   - `binarySearchStart(long long t)` → int index (first ≥ t)
   - `binarySearchEnd(long long t)` → int index (last ≤ t)
   - Cho phép query range [t_start, t_end] trong O(log n + k)
 
 ### Index Manager
+
 - [ ] `src/indexing/IndexManager.h/.cpp`
   - `buildAll(DataStore& store)` — khởi tạo tất cả index
   - `rebuildAll(DataStore& store)` — sau khi load file mới
@@ -43,7 +48,7 @@
 
 ## Expected Output
 
-```
+```bash
 > load data/sample.csv
 [INFO] Loaded 9847 records.
 [INFO] Building indexes...
@@ -59,7 +64,8 @@
 ## Manual Test Guide
 
 ### Test 1: Lookup user
-```
+
+```bash
 1. Load file
 2. Trong code: gọi hashIndex.getByUser("U007")
 3. In ra tất cả record của U007
@@ -67,20 +73,23 @@
 ```
 
 ### Test 2: Time range query
-```
+
+```bash
 1. Dùng sortedIndex.binarySearchStart(1713000000)
 2. Dùng sortedIndex.binarySearchEnd(1713999999)
 3. Expect: chỉ lấy records trong khoảng timestamp đó
 ```
 
 ### Test 3: Hash collision handling
-```
+
+```bash
 1. Insert nhiều keys khác nhau nhưng cùng bucket
 2. Expect: tất cả đều lookup được đúng
 ```
 
 ### Test 4: Memory sau khi clearAll()
-```
+
+```bash
 1. buildAll() → clearAll()
 2. Expect: không leak (valgrind clean)
 ```
@@ -90,6 +99,7 @@
 ## Kỹ thuật quan trọng
 
 ### Linked List cho Hash Bucket
+
 ```cpp
 struct Node {
     LogRecord* record;
@@ -102,6 +112,7 @@ struct Bucket {
 ```
 
 ### Hash Function cho string
+
 ```cpp
 // Polynomial rolling hash — phân phối tốt
 int hashString(const string& key, int tableSize) {
@@ -114,6 +125,7 @@ int hashString(const string& key, int tableSize) {
 ```
 
 ### Merge Sort trên mảng con trỏ
+
 ```cpp
 // Sort mảng LogRecord** theo field timestamp
 void mergeSort(LogRecord** arr, int left, int right);
@@ -121,7 +133,8 @@ void merge(LogRecord** arr, int l, int m, int r);
 ```
 
 ### Table Size
-```
+
+```bash
 Dùng prime number gần nhất với 2x số record
 Ví dụ: 10k records → table size 20011
         1M records → table size 1999993

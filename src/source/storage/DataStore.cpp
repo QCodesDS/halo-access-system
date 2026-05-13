@@ -1,31 +1,53 @@
+/**
+ * @file        DataStore.cpp
+ * @brief       Implementation của DataStore - container lưu trữ LogRecord.
+ * @author      QCodesDS
+ * @date        2026-05-13
+ */
+
 #include "storage/DataStore.h"
 #include <cstdlib>
-#include <cstring>
 #include <iostream>
+
+// ================================================================================
+//  Implementation
+// ================================================================================
+
+DataStore::DataStore()
+    : records(nullptr), capacity(0), count(0)
+{
+}
 
 void initDataStore(DataStore &store, int initialCapacity)
 {
+    if (initialCapacity < 1)
+        initialCapacity = 1000;
+
     store.capacity = initialCapacity;
     store.count = 0;
     store.records = new LogRecord *[store.capacity];
-    // No need to initialize pointers to nullptr, we track count
 }
 
 void push(DataStore &store, LogRecord *r)
 {
-    // Double capacity if full
+    if (r == nullptr)
+        return;
+
+    // Mở rộng dung lượng nếu cần (doubling)
     if (store.count >= store.capacity)
     {
         int newCapacity = store.capacity * 2;
+        if (newCapacity < 1000)
+            newCapacity = 1000;
+
         LogRecord **newRecords = new LogRecord *[newCapacity];
 
-        // Copy existing records
+        // Sao chép con trỏ
         for (int i = 0; i < store.count; ++i)
         {
             newRecords[i] = store.records[i];
         }
 
-        // Delete old array
         delete[] store.records;
 
         store.records = newRecords;
@@ -38,9 +60,8 @@ void push(DataStore &store, LogRecord *r)
 LogRecord *get(const DataStore &store, int i)
 {
     if (i < 0 || i >= store.count)
-    {
         return nullptr;
-    }
+
     return store.records[i];
 }
 
@@ -51,16 +72,18 @@ int size(const DataStore &store)
 
 void clear(DataStore &store)
 {
-    // Delete each LogRecord
-    for (int i = 0; i < store.count; ++i)
+    if (store.records != nullptr)
     {
-        delete store.records[i];
+        // Giải phóng từng LogRecord (vì DataStore sở hữu chúng)
+        for (int i = 0; i < store.count; ++i)
+        {
+            delete store.records[i];
+        }
+
+        delete[] store.records;
     }
 
-    // Delete array
-    delete[] store.records;
-
-    // Reset
+    // Reset về trạng thái ban đầu
     store.records = nullptr;
     store.count = 0;
     store.capacity = 0;

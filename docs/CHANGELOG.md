@@ -196,3 +196,56 @@
   - ≤1M records: prime 1999993 (load factor ≈ 0.5)
 - Build time O(n log n) dominated by merge sort
 - Performance: 2k records indexed in 0.03s, 0 memory leaks
+
+---
+
+## [2026-05-13] — Phase 03: Query Engine (Midterm) — Hoàn thành
+
+### Đã hoàn thành
+
+- ✅ Tạo `src/include/query/UserJourneyQuery.h/.cpp` (FR-03)
+  - Struct `UserJourneyQuery` với userId, timeStart, timeEnd
+  - Hàm `executeUserJourney()`: lookup từ HashIndex.byUser, filter time range, insertion sort, in định dạng
+  - Format: `[YYYY-MM-DD HH:MM:SS] device_id → app_id → resource_id (event_type @ location)`
+- ✅ Tạo `src/include/query/ResourceJourneyQuery.h/.cpp` (FR-04)
+  - Struct `ResourceJourneyQuery` với resourceId, timeStart, timeEnd
+  - Hàm `executeResourceJourney()`: lookup từ HashIndex.byResource, filter time range, insertion sort, in định dạng
+  - Format: `[YYYY-MM-DD HH:MM:SS] user_id → device_id → app_id (event_type @ location)`
+
+- ✅ Tạo `src/include/query/TopResourceQuery.h/.cpp` (FR-05)
+  - Struct `CountEntry` với resourceId, count
+  - Hàm `executeTopResources()`: binary search time range từ SortedIndex, đếm tần suất bằng dynamic array thủ công
+  - Selection sort để lấy top N (chỉ N lần), in bảng đẹp với Rank, Resource, Count
+- ✅ Tạo `src/include/query/QueryEngine.h/.cpp`
+  - Hàm `executeQuery()`: parser CLI command, dispatch đúng query type
+  - Hỗ trợ: "query user <uid> <t_start> <t_end>", "query resource <rid> <t_start> <t_end>", "top resources <t_start> <t_end>"
+
+- ✅ Cập nhật `src/main.cpp` — CLI integration
+  - Thêm lệnh query vào CLI loop
+  - Thêm help text cho 3 query commands
+  - Verify indexes built trước khi query
+
+- ✅ Build: `cmake --build build` — clean, 0 warnings
+- ✅ Test FR-03 với test.csv: U007 → 1 event, sorted by timestamp ✓
+- ✅ Test FR-04 với test.csv: R025 → 1 event ✓
+- ✅ Test FR-05 với test.csv: Top 6 resources, sorted by count descending ✓
+- ✅ Test edge case: User/Resource không tồn tại → "[INFO] No events found..." ✓
+- ✅ Test với 1k dataset: 14 events U007, 40 events R025 ✓
+- ✅ Valgrind test: **0 memory leaks**, 7024 allocs = 7024 frees ✓
+- ✅ Stress test: 7 queries liên tiếp — memory stable, không leak ✓
+- ✅ Multiple time ranges: Correct filtering ✓
+
+### Kỹ thuật quan trọng
+
+- **Insertion sort** cho user/resource journey (O(n²) nhưng n thường <100 events)
+- **Selection sort** cho top N (chỉ lặp N lần, hiệu quả hơn full sort)
+- **Dynamic array thủ công** cho CountEntry, expand capacity khi cần (no STL containers)
+- **Binary search** từ SortedIndex để lấy time range — O(log n)
+- **Không delete** array từ HashIndex.lookupHash() — owned by HashNode
+
+### Ghi chú
+
+- Tất cả queries hoạt động chính xác với 0 double-free errors
+- Memory management: tất cả intermediate arrays được giải phóng ngay sau query
+- Print format đẹp với separators (dashes) cho dễ đọc
+- Sẵn sàng cho Phase 04 (scale up 1M rows)

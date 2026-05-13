@@ -1,15 +1,35 @@
-#pragma once
+/**
+ * @file        CsvLoader.h
+ * @brief       Module tải dữ liệu từ file CSV vào DataStore.
+ *
+ * Hỗ trợ đọc file CSV theo định dạng chuẩn của hệ thống log an ninh.
+ *
+ * @author      QCodesDS
+ * @date        2026-05-13
+ * @version     1.0
+ */
+
+#ifndef CSV_LOADER_H
+#define CSV_LOADER_H
 
 #include <string>
 
-// Result of loading CSV file
+/// @brief Kết quả trả về sau khi load file CSV
 struct LoadResult
 {
-    int loaded;  // Number of records successfully loaded
-    int skipped; // Number of records skipped
+    int loaded;  ///< Số bản ghi tải thành công
+    int skipped; ///< Số bản ghi bị bỏ qua (lỗi hoặc không hợp lệ)
 };
 
-struct DataStore;
+struct DataStore; // Forward declaration
 
-// Load CSV file into DataStore
-LoadResult load(const std::string &filepath, DataStore &store);
+/**
+ * @brief Tải dữ liệu từ file CSV vào DataStore.
+ *
+ * @param filepath Đường dẫn đến file CSV
+ * @param store DataStore đích (sẽ nhận các LogRecord được tạo)
+ * @return LoadResult chứa thông tin số lượng loaded và skipped
+ */
+[[nodiscard]] LoadResult load(const std::string &filepath, DataStore &store);
+
+#endif // CSV_LOADER_H

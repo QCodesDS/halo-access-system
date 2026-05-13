@@ -1,34 +1,36 @@
+/**
+ * @file        StringUtils.cpp
+ * @brief       Implementation của các hàm tiện ích chuỗi.
+ * @author      QCodesDS
+ * @date        2026-05-12
+ */
+
 #include "utils/StringUtils.h"
+
+// ================================================================================
+//  Public functions
+// ================================================================================
 
 std::string *split(const std::string &s, char delim, int &outCount)
 {
-    // First pass: count delimiters to determine number of tokens
-    int count = 1; // At least one token if string is not empty
     if (s.empty())
     {
-        count = 0;
-    }
-    else
-    {
-        for (size_t i = 0; i < s.length(); ++i)
-        {
-            if (s[i] == delim)
-            {
-                count++;
-            }
-        }
-    }
-
-    outCount = count;
-    if (count == 0)
-    {
+        outCount = 0;
         return nullptr;
     }
 
-    // Allocate array for tokens
+    // First pass: đếm số token
+    int count = 1;
+    for (char c : s)
+    {
+        if (c == delim)
+            ++count;
+    }
+
+    outCount = count;
     std::string *tokens = new std::string[count];
 
-    // Second pass: extract tokens
+    // Second pass: tách chuỗi
     int tokenIndex = 0;
     size_t start = 0;
 
@@ -37,7 +39,7 @@ std::string *split(const std::string &s, char delim, int &outCount)
         if (i == s.length() || s[i] == delim)
         {
             tokens[tokenIndex] = s.substr(start, i - start);
-            tokenIndex++;
+            ++tokenIndex;
             start = i + 1;
         }
     }
@@ -50,17 +52,13 @@ std::string trim(const std::string &s)
     size_t start = 0;
     size_t end = s.length();
 
-    // Find first non-whitespace character
-    while (start < s.length() && (s[start] == ' ' || s[start] == '\t'))
-    {
-        start++;
-    }
+    // Bỏ khoảng trắng đầu
+    while (start < end && (s[start] == ' ' || s[start] == '\t'))
+        ++start;
 
-    // Find last non-whitespace character
+    // Bỏ khoảng trắng cuối
     while (end > start && (s[end - 1] == ' ' || s[end - 1] == '\t'))
-    {
-        end--;
-    }
+        --end;
 
     return s.substr(start, end - start);
 }
@@ -68,15 +66,12 @@ std::string trim(const std::string &s)
 bool strEquals(const std::string &a, const std::string &b)
 {
     if (a.length() != b.length())
-    {
         return false;
-    }
+
     for (size_t i = 0; i < a.length(); ++i)
     {
         if (a[i] != b[i])
-        {
             return false;
-        }
     }
     return true;
 }

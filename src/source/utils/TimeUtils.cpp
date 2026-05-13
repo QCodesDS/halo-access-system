@@ -1,13 +1,23 @@
+/**
+ * @file        TimeUtils.cpp
+ * @brief       Implementation của các hàm tiện ích thời gian.
+ * @author      QCodesDS
+ * @date        2026-05-12
+ */
+
 #include "utils/TimeUtils.h"
 #include <ctime>
 #include <cstdio>
 
 std::string epochToReadable(long long epoch)
 {
-    time_t t = (time_t)epoch;
+    time_t t = static_cast<time_t>(epoch);
     struct tm *utcTime = gmtime(&t);
 
-    char buffer[64]; // Sufficient space for datetime format
+    if (utcTime == nullptr)
+        return "INVALID_TIME";
+
+    char buffer[64];
     snprintf(buffer, sizeof(buffer), "%04d-%02d-%02d %02d:%02d:%02d",
              utcTime->tm_year + 1900,
              utcTime->tm_mon + 1,
@@ -21,14 +31,15 @@ std::string epochToReadable(long long epoch)
 
 int getHourUTC(long long epoch)
 {
-    time_t t = (time_t)epoch;
+    time_t t = static_cast<time_t>(epoch);
     struct tm *utcTime = gmtime(&t);
-    return utcTime->tm_hour;
+
+    return (utcTime != nullptr) ? utcTime->tm_hour : -1;
 }
 
 bool isOffHours(long long epoch)
 {
     int hour = getHourUTC(epoch);
-    // Off-hours if before 08:00 (hour < 8) or at/after 18:00 (hour >= 18)
+    // Ngoài giờ làm việc: trước 08:00 hoặc từ 18:00 trở đi (theo UTC)
     return (hour < 8 || hour >= 18);
 }

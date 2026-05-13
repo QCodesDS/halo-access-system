@@ -1,9 +1,20 @@
+/**
+ * @file        Validator.cpp
+ * @brief       Implementation của các hàm kiểm tra tính hợp lệ dữ liệu.
+ * @author      QCodesDS
+ * @date        2026-05-13
+ */
+
 #include "storage/Validator.h"
 #include <iostream>
 
+// ================================================================================
+//  Helper functions
+// ================================================================================
+
 bool isValidString(const std::string &s)
 {
-    return s.length() > 0;
+    return !s.empty(); // Modern & clear way
 }
 
 bool isValidTimestamp(long long ts)
@@ -11,9 +22,13 @@ bool isValidTimestamp(long long ts)
     return ts > 0;
 }
 
+// ================================================================================
+//  Main validation function
+// ================================================================================
+
 bool isValid(const LogRecord &r)
 {
-    // Check all string fields are non-empty
+    // Kiểm tra các trường string
     if (!isValidString(r.user_id))
     {
         std::cerr << "[WARNING] Invalid user_id (empty)" << std::endl;
@@ -38,21 +53,20 @@ bool isValid(const LogRecord &r)
         return false;
     }
 
-    // Check event_type is valid (not UNKNOWN_EVENT)
+    // Kiểm tra enum
     if (r.event_type == UNKNOWN_EVENT)
     {
         std::cerr << "[WARNING] Invalid event_type (UNKNOWN_EVENT)" << std::endl;
         return false;
     }
 
-    // Check location is valid (not UNKNOWN_LOCATION)
     if (r.location == UNKNOWN_LOCATION)
     {
         std::cerr << "[WARNING] Invalid location (UNKNOWN_LOCATION)" << std::endl;
         return false;
     }
 
-    // Check timestamp is valid (> 0)
+    // Kiểm tra timestamp
     if (!isValidTimestamp(r.timestamp))
     {
         std::cerr << "[WARNING] Invalid timestamp (" << r.timestamp << ")" << std::endl;

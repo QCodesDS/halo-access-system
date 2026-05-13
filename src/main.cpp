@@ -12,6 +12,7 @@
 #include "storage/Deduplicator.h"
 #include "indexing/IndexManager.h"
 #include "cli/Printer.h"
+#include "query/QueryEngine.h"
 
 using namespace std;
 
@@ -80,13 +81,31 @@ int main()
                 buildAllIndexes(indexMgr, store);
             }
         }
+        // Query commands
+        else if (strEquals(command, "query") || strEquals(command, "top"))
+        {
+            // Reconstruct query string from remaining tokens
+            string queryStr = line;
+
+            if (!indexMgr.isBuilt)
+            {
+                printError("No data loaded. Use 'load <filepath>' first.");
+            }
+            else
+            {
+                executeQuery(queryStr, indexMgr.hashIdx, indexMgr.sortedIdx);
+            }
+        }
         // Help command
         else if (strEquals(command, "help"))
         {
             cout << "Available commands:" << endl;
-            cout << "  load <filepath>  - Load CSV file" << endl;
-            cout << "  help             - Show this help message" << endl;
-            cout << "  exit             - Exit program" << endl;
+            cout << "  load <filepath>                          - Load CSV file" << endl;
+            cout << "  query user <uid> <t_start> <t_end>       - User journey query" << endl;
+            cout << "  query resource <rid> <t_start> <t_end>   - Resource journey query" << endl;
+            cout << "  top resources <t_start> <t_end>          - Top resources by count" << endl;
+            cout << "  help                                     - Show this help message" << endl;
+            cout << "  exit                                     - Exit program" << endl;
         }
         // Exit command
         else if (strEquals(command, "exit"))

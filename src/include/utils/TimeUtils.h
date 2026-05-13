@@ -1,16 +1,36 @@
+/**
+ * @file        TimeUtils.h
+ * @brief       Các hàm tiện ích xử lý thời gian Unix epoch.
+ *
+ * @author      QCodesDS
+ * @date        2026-05-12
+ * @version     1.0
+ */
+
 #ifndef TIME_UTILS_H
 #define TIME_UTILS_H
 
 #include <string>
 
-// Convert Unix epoch seconds to UTC readable format "YYYY-MM-DD HH:MM:SS"
+/**
+ * @brief Chuyển Unix timestamp sang chuỗi thời gian dễ đọc (UTC).
+ * @param epoch Thời gian Unix timestamp (giây)
+ * @return Chuỗi định dạng "YYYY-MM-DD HH:MM:SS"
+ */
 std::string epochToReadable(long long epoch);
 
-// Check if epoch time is outside work hours (08:00-18:00 UTC)
-// Returns true if time is off-hours (before 08:00 or at/after 18:00)
+/**
+ * @brief Kiểm tra xem thời gian có nằm ngoài giờ làm việc (08:00 - 18:00 UTC) hay không.
+ * @param epoch Thời gian Unix timestamp (giây)
+ * @return `true` nếu là ngoài giờ làm việc
+ */
 bool isOffHours(long long epoch);
 
-// Get hour (0-23) from epoch time in UTC
+/**
+ * @brief Lấy giờ (0-23) từ Unix timestamp theo múi giờ UTC.
+ * @param epoch Thời gian Unix timestamp (giây)
+ * @return Giờ trong ngày (0-23)
+ */
 int getHourUTC(long long epoch);
 
 #endif // TIME_UTILS_H

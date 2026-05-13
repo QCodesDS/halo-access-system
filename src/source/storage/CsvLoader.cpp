@@ -1,3 +1,10 @@
+/**
+ * @file        CsvLoader.cpp
+ * @brief       Implementation của module tải dữ liệu CSV.
+ * @author      QCodesDS
+ * @date        2026-05-13
+ */
+
 #include "storage/CsvLoader.h"
 #include "storage/DataStore.h"
 #include "storage/Validator.h"
@@ -6,11 +13,11 @@
 #include "models/Location.h"
 #include <fstream>
 #include <iostream>
-#include <cstdlib>
+#include <string>
 
 LoadResult load(const std::string &filepath, DataStore &store)
 {
-    LoadResult result = {0, 0};
+    LoadResult result{0, 0};
 
     std::ifstream file(filepath);
     if (!file.is_open())
@@ -22,52 +29,45 @@ LoadResult load(const std::string &filepath, DataStore &store)
     std::string line;
     int lineNum = 0;
 
-    // Skip header
+    // Skip header line
     if (!std::getline(file, line))
     {
         std::cerr << "[ERROR] Empty file: " << filepath << std::endl;
-        file.close();
         return result;
     }
-    lineNum++;
+    ++lineNum;
 
     // Read data lines
     while (std::getline(file, line))
     {
-        lineNum++;
+        ++lineNum;
 
-        // Trim the line
         line = trim(line);
-
-        // Skip empty lines
         if (line.empty())
         {
-            result.skipped++;
+            ++result.skipped;
             continue;
         }
 
-        // Split by comma
+        // Tách các trường bằng dấu phẩy
         int tokenCount = 0;
         std::string *tokens = split(line, ',', tokenCount);
 
-        // Check token count
         if (tokenCount != 7)
         {
-            std::cerr << "[WARNING] Line " << lineNum << ": Expected 7 fields, got " << tokenCount << std::endl;
-            result.skipped++;
-            if (tokens != nullptr)
-            {
-                delete[] tokens;
-            }
+            std::cerr << "[WARNING] Line " << lineNum
+                      << ": Expected 7 fields, got " << tokenCount << std::endl;
+            ++result.skipped;
+            delete[] tokens;
             continue;
         }
 
-        // Trim and parse tokens
+        // Trim tất cả các trường
         std::string user_id = trim(tokens[0]);
         std::string device_id = trim(tokens[1]);
         std::string app_id = trim(tokens[2]);
         std::string resource_id = trim(tokens[3]);
-        std::string event_type_str = trim(tokens[4]);
+        std::string event_str = trim(tokens[4]);
         std::string location_str = trim(tokens[5]);
         std::string timestamp_str = trim(tokens[6]);
 
@@ -79,34 +79,35 @@ LoadResult load(const std::string &filepath, DataStore &store)
         }
         catch (...)
         {
-            std::cerr << "[WARNING] Line " << lineNum << ": Invalid timestamp: " << timestamp_str << std::endl;
-            result.skipped++;
+            std::cerr << "[WARNING] Line " << lineNum
+                      << ": Invalid timestamp: " << timestamp_str << std::endl;
+            ++result.skipped;
             delete[] tokens;
             continue;
         }
 
-        // Create LogRecord
+        // Tạo LogRecord
         LogRecord *record = new LogRecord(
             user_id,
             device_id,
             app_id,
             resource_id,
-            parseEventType(event_type_str),
+            parseEventType(event_str),
             parseLocation(location_str),
             timestamp);
 
-        // Validate
+        // Kiểm tra tính hợp lệ
         if (!isValid(*record))
         {
-            result.skipped++;
+            ++result.skipped;
             delete record;
             delete[] tokens;
             continue;
         }
 
-        // Add to store
+        // Thêm vào DataStore
         push(store, record);
-        result.loaded++;
+        ++result.loaded;
 
         delete[] tokens;
     }
