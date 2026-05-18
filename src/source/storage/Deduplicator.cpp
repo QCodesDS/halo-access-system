@@ -15,13 +15,62 @@
 
 bool recordsEqual(const LogRecord &r1, const LogRecord &r2)
 {
-    return strEquals(r1.user_id, r2.user_id) &&
-           strEquals(r1.device_id, r2.device_id) &&
-           strEquals(r1.app_id, r2.app_id) &&
-           strEquals(r1.resource_id, r2.resource_id) &&
+    return r1.timestamp == r2.timestamp &&
            r1.event_type == r2.event_type &&
            r1.location == r2.location &&
-           r1.timestamp == r2.timestamp;
+           strEquals(r1.user_id, r2.user_id) &&
+           strEquals(r1.device_id, r2.device_id) &&
+           strEquals(r1.app_id, r2.app_id) &&
+           strEquals(r1.resource_id, r2.resource_id);
+}
+
+// ================================================================================
+//  Merge Sort Helper for Deduplication
+// ================================================================================
+
+static void mergeStore(LogRecord **arr, int left, int mid, int right)
+{
+    int leftSize = mid - left + 1;
+    int rightSize = right - mid;
+
+    LogRecord **leftArr = new LogRecord *[leftSize];
+    LogRecord **rightArr = new LogRecord *[rightSize];
+
+    for (int i = 0; i < leftSize; i++)
+        leftArr[i] = arr[left + i];
+    for (int j = 0; j < rightSize; j++)
+        rightArr[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+    while (i < leftSize && j < rightSize)
+    {
+        if (leftArr[i]->timestamp <= rightArr[j]->timestamp)
+        {
+            arr[k++] = leftArr[i++];
+        }
+        else
+        {
+            arr[k++] = rightArr[j++];
+        }
+    }
+    while (i < leftSize)
+        arr[k++] = leftArr[i++];
+    while (j < rightSize)
+        arr[k++] = rightArr[j++];
+
+    delete[] leftArr;
+    delete[] rightArr;
+}
+
+static void sortStoreByTimestamp(LogRecord **arr, int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        sortStoreByTimestamp(arr, left, mid);
+        sortStoreByTimestamp(arr, mid + 1, right);
+        mergeStore(arr, left, mid, right);
+    }
 }
 
 // ================================================================================
@@ -33,6 +82,10 @@ int deduplicate(DataStore &store)
     if (store.count <= 1)
         return 0;
 
+    // BƯỚC 1: Sắp xếp toàn bộ dữ liệu theo timestamp trước (O(N log N))
+    sortStoreByTimestamp(store.records, 0, store.count - 1);
+
+    // BƯỚC 2: Loại bỏ trùng lặp (O(N))
     int duplicatesRemoved = 0;
 
     // Tạo DataStore tạm để chứa các bản ghi unique
@@ -48,9 +101,16 @@ int deduplicate(DataStore &store)
     {
         bool isDuplicate = false;
 
-        // So sánh với tất cả các bản ghi đã có trong tempStore
-        for (int j = 0; j < tempStore.count; ++j)
+        // Vì mảng đã sắp xếp theo timestamp, bản ghi trùng lặp chắc chắn sẽ 
+        // có cùng timestamp và nằm ở cuối của tempStore. 
+        // Chỉ cần tìm lùi lại các bản ghi có cùng timestamp.
+        for (int j = tempStore.count - 1; j >= 0; --j)
         {
+            if (tempStore.records[j]->timestamp != store.records[i]->timestamp)
+            {
+                // Khác timestamp thì chắc chắn không trùng, và không cần tìm sâu hơn.
+                break;
+            }
             if (recordsEqual(*store.records[i], *tempStore.records[j]))
             {
                 isDuplicate = true;

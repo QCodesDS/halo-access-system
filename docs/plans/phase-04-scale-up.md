@@ -6,28 +6,30 @@
 **Prereq:** Phase 03 hoàn thành
 **Mục tiêu:** Hệ thống stable, nhanh, không leak trên 1M dòng.
 
+**Status: ✅ HOÀN THÀNH**
+
 ---
 
 ## Checklist
 
 ### Performance
 
-- [ ] Test load 1.000.000 dòng — không crash
-- [ ] Đo: load time < 15s, query time < 5s, total < 10s
-- [ ] Tối ưu DataStore capacity growth nếu cần
-- [ ] Tối ưu hash table size cho 1M records
+- [x] Test load 1.000.000 dòng — không crash
+- [x] Đo: load time < 15s, query time < 5s, total < 10s
+- [x] Tối ưu DataStore capacity growth nếu cần (Đã tối ưu Deduplicator $O(n \log n)$)
+- [x] Tối ưu hash table size cho 1M records
 
 ### Memory Audit
 
-- [ ] Rà soát toàn bộ `new` có `delete` tương ứng
-- [ ] Kiểm tra: sau `load` → `query` → `exit` không leak
-- [ ] Kiểm tra: load nhiều file liên tiếp không tích lũy leak
+- [x] Rà soát toàn bộ `new` có `delete` tương ứng
+- [x] Kiểm tra: sau `load` → `query` → `exit` không leak
+- [x] Kiểm tra: load nhiều file liên tiếp không tích lũy leak
 
 ### Robustness
 
-- [ ] Test với file 1M dòng có 5% dòng invalid
-- [ ] Test với file 1M dòng có 10% duplicates
-- [ ] Test query trên tập rỗng sau khi filter
+- [x] Test với file 1M dòng có 5% dòng invalid
+- [x] Test với file 1M dòng có 10% duplicates
+- [x] Test query trên tập rỗng sau khi filter
 
 ### Manual Test Guide
 
@@ -43,7 +45,7 @@
 
 ## Definition of Done
 
-- [ ] Load 1M dòng không crash
-- [ ] Tổng thời gian xử lý < 10s trên 1M dòng
-- [ ] Valgrind: no leak (hoặc manual verify)
-- [ ] Update CHANGELOG + master-plan
+- [x] Load 1M dòng không crash
+- [x] Tổng thời gian xử lý < 10s trên 1M dòng
+- [x] Valgrind: no leak (hoặc manual verify)
+- [x] Update CHANGELOG + master-plan

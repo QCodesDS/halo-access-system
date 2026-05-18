@@ -2,8 +2,8 @@
 
 # Threshold + Behavior + Session + Advanced
 
-**Thời lượng:** 7 ngày
-**Prereq:** Phase 04 hoàn thành
+**Thời lượng:** 7 ngày  
+**Prereq:** Phase 04 hoàn thành  
 **Mục tiêu:** Phát hiện đầy đủ anomaly FR-06 đến FR-09. Nộp bài final.
 
 ---

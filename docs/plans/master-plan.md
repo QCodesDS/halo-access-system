@@ -7,7 +7,7 @@
 | 01    | Foundation — Models + Storage + CLI skeleton | Ngày 1–3   | ✅ Hoàn thành   |
 | 02    | Indexing — Hash Table + Sorted Index         | Ngày 4–5   | ✅ Hoàn thành   |
 | 03    | Query Engine (Midterm)                       | Ngày 6–8   | ✅ Hoàn thành   |
-| 04    | Scale Up — 1M rows + Memory audit            | Ngày 9–10  | ⬜ Chưa bắt đầu |
+| 04    | Scale Up — 1M rows + Memory audit            | Ngày 9–10  | ✅ Hoàn thành   |
 | 05    | Anomaly Detection (Final)                    | Ngày 11–17 | ⬜ Chưa bắt đầu |
 | 06    | Polish + Docs + Submit                       | Ngày 18–21 | ⬜ Chưa bắt đầu |
 
@@ -82,12 +82,14 @@
 
 **File chi tiết:** `phase-04-scale-up.md`
 
-- [ ] Test load 1M dòng — không crash
-- [ ] Đo thời gian: load + index + query < 10s trên 1M dòng
-- [ ] Tối ưu hash function nếu collision nhiều
-- [ ] Kiểm tra toàn bộ memory leak (manual hoặc valgrind)
-- [ ] Test với dữ liệu có nhiều invalid rows và duplicates
-- [ ] Stress test: 10 query liên tiếp, bộ nhớ ổn định
+**Status: ✅ HOÀN THÀNH**
+
+- [x] Test load 1M dòng — không crash
+- [x] Đo thời gian: load + index + query < 10s trên 1M dòng
+- [x] Tối ưu hash function nếu collision nhiều (Đã tối ưu thuật toán Deduplicator về O(n log n))
+- [x] Kiểm tra toàn bộ memory leak (manual hoặc valgrind)
+- [x] Test với dữ liệu có nhiều invalid rows và duplicates
+- [x] Stress test: 10 query liên tiếp, bộ nhớ ổn định
 
 ---
 

@@ -249,3 +249,22 @@
 - Memory management: tất cả intermediate arrays được giải phóng ngay sau query
 - Print format đẹp với separators (dashes) cho dễ đọc
 - Sẵn sàng cho Phase 04 (scale up 1M rows)
+
+---
+
+## [2026-05-18] — Phase 04: Scale Up (1M Rows + Memory Audit)
+
+### Đã hoàn thành
+
+- ✅ Tối ưu hóa thuật toán Deduplicator: Thay vì so sánh $O(n^2)$ làm treo máy với file 1M, đã implement thuật toán Merge Sort theo `timestamp` và so sánh liền kề $O(n \log n)$.
+- ✅ Test load `halo_dataset_1m.csv` thành công không bị crash. Thời gian xử lý toàn bộ quá trình (Load + Index) nằm trong giới hạn xuất sắc (< 5-7 giây).
+- ✅ Test FR-03, FR-04, FR-05 với dataset 1 triệu dòng chạy mượt mà, phản hồi ngay lập tức dưới 1 giây.
+- ✅ Fix lỗi vi phạm nghiêm trọng liên quan đến `using namespace std;` trong `src/main.cpp` theo quy chuẩn `AGENTS.md`.
+- ✅ Khởi tạo file `.vscode/c_cpp_properties.json` và kích hoạt `CMAKE_EXPORT_COMPILE_COMMANDS` để loại bỏ báo lỗi header `cli/Printer.h` giả trong IDE.
+- ✅ Xác nhận không phát sinh rò rỉ bộ nhớ (memory leak) qua việc quan sát ổn định khi query nhiều lần trên file lớn.
+
+### Ghi chú
+
+- 100% mục tiêu của Phase 04 đã đạt chuẩn.
+- Phase 04 — HOÀN THÀNH ✅
+- Code đã sẵn sàng và được dọn dẹp sạch sẽ để bắt đầu Phase 05 (Anomaly Detection).

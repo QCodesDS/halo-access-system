@@ -1,145 +1,156 @@
-#include <iostream>
-#include <cstring>
-#include <sstream>
+#include "cli/Printer.h"
+#include "indexing/IndexManager.h"
 #include "models/EventType.h"
 #include "models/Location.h"
 #include "models/LogRecord.h"
+#include "query/QueryEngine.h"
+#include "anomaly/AnomalyEngine.h"
+#include "storage/CsvLoader.h"
+#include "storage/DataStore.h"
+#include "storage/Deduplicator.h"
+#include "storage/Validator.h"
 #include "utils/StringUtils.h"
 #include "utils/TimeUtils.h"
-#include "storage/DataStore.h"
-#include "storage/CsvLoader.h"
-#include "storage/Validator.h"
-#include "storage/Deduplicator.h"
-#include "indexing/IndexManager.h"
-#include "cli/Printer.h"
-#include "query/QueryEngine.h"
+#include <cstring>
+#include <iostream>
+#include <sstream>
+#include <chrono>
 
-using namespace std;
+int main() {
+  std::cout << "=== Halo Cyber Access Engine ===" << std::endl;
+  std::cout << "Type 'help' for available commands" << std::endl;
+  std::cout << std::endl;
 
-int main()
-{
-    cout << "=== Halo Cyber Access Engine ===" << endl;
-    cout << "Type 'help' for available commands" << endl;
-    cout << endl;
+  DataStore store;
+  initDataStore(store);
 
-    DataStore store;
-    initDataStore(store);
+  IndexManager indexMgr;
+  indexMgr.isBuilt = false;
 
-    IndexManager indexMgr;
-    indexMgr.isBuilt = false;
-
-    string line;
-    while (true)
-    {
-        cout << "> ";
-        if (!getline(cin, line))
-        {
-            break;
-        }
-
-        // Trim line
-        line = trim(line);
-
-        // Skip empty lines
-        if (line.empty())
-        {
-            continue;
-        }
-
-        // Split command and arguments
-        int argc = 0;
-        string *argv = split(line, ' ', argc);
-
-        if (argc == 0)
-        {
-            if (argv != nullptr)
-            {
-                delete[] argv;
-            }
-            continue;
-        }
-
-        string command = argv[0];
-
-        // Load command
-        if (strEquals(command, "load") && argc >= 2)
-        {
-            string filepath = argv[1];
-            LoadResult loadResult = load(filepath, store);
-
-            int numDuplicates = deduplicate(store);
-
-            stringstream ss;
-            ss << "Loaded " << loadResult.loaded << " records ("
-               << loadResult.skipped << " skipped, "
-               << numDuplicates << " duplicates removed)";
-            printInfo(ss.str());
-
-            // Build indexes
-            if (store.count > 0)
-            {
-                buildAllIndexes(indexMgr, store);
-            }
-        }
-        // Query commands
-        else if (strEquals(command, "query") || strEquals(command, "top"))
-        {
-            // Reconstruct query string from remaining tokens
-            string queryStr = line;
-
-            if (!indexMgr.isBuilt)
-            {
-                printError("No data loaded. Use 'load <filepath>' first.");
-            }
-            else
-            {
-                executeQuery(queryStr, indexMgr.hashIdx, indexMgr.sortedIdx);
-            }
-        }
-        // Help command
-        else if (strEquals(command, "help"))
-        {
-            cout << "Available commands:" << endl;
-            cout << "  load <filepath>                          - Load CSV file" << endl;
-            cout << "  query user <uid> <t_start> <t_end>       - User journey query" << endl;
-            cout << "  query resource <rid> <t_start> <t_end>   - Resource journey query" << endl;
-            cout << "  top resources <t_start> <t_end>          - Top resources by count" << endl;
-            cout << "  help                                     - Show this help message" << endl;
-            cout << "  exit                                     - Exit program" << endl;
-        }
-        // Exit command
-        else if (strEquals(command, "exit"))
-        {
-            printInfo("Memory freed. Goodbye.");
-            if (argv != nullptr)
-            {
-                delete[] argv;
-            }
-            // Clear indexes
-            if (indexMgr.isBuilt)
-            {
-                clearAllIndexes(indexMgr);
-            }
-            clear(store);
-            break;
-        }
-        // Unknown command
-        else
-        {
-            printError("Unknown command: " + command);
-        }
-
-        if (argv != nullptr)
-        {
-            delete[] argv;
-        }
+  std::string line;
+  while (true) {
+    std::cout << "> ";
+    if (!getline(std::cin, line)) {
+      break;
     }
 
-    // Make sure store is cleaned up
-    if (store.count > 0)
-    {
-        clear(store);
+    // Trim line
+    line = trim(line);
+
+    // Skip empty lines
+    if (line.empty()) {
+      continue;
     }
 
-    return 0;
+    // Split command and arguments
+    int argc = 0;
+    std::string *argv = split(line, ' ', argc);
+
+    if (argc == 0) {
+      if (argv != nullptr) {
+        delete[] argv;
+      }
+      continue;
+    }
+
+    std::string command = argv[0];
+
+    // Load command
+    if (strEquals(command, "load") && argc >= 2) {
+      std::string filepath = argv[1];
+      LoadResult loadResult = load(filepath, store);
+
+      int numDuplicates = deduplicate(store);
+
+      std::stringstream ss;
+      ss << "Loaded " << loadResult.loaded << " records (" << loadResult.skipped
+         << " skipped, " << numDuplicates << " duplicates removed)";
+      printInfo(ss.str());
+
+      // Build indexes
+      if (store.count > 0) {
+        buildAllIndexes(indexMgr, store);
+      }
+    }
+    // Query commands
+    else if (strEquals(command, "query") || strEquals(command, "top")) {
+      // Reconstruct query string from remaining tokens
+      std::string queryStr = line;
+
+      if (!indexMgr.isBuilt) {
+        printError("No data loaded. Use 'load <filepath>' first.");
+      } else {
+        executeQuery(queryStr, indexMgr.hashIdx, indexMgr.sortedIdx);
+      }
+    }
+    // Detect command
+    else if (strEquals(command, "detect")) {
+      if (!indexMgr.isBuilt) {
+        printError("No data loaded. Use 'load <filepath>' first.");
+      } else {
+        auto startDetect = std::chrono::high_resolution_clock::now();
+        AnomalyList results;
+        runAnomalyDetection(results, store, indexMgr.hashIdx);
+        auto endDetect = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> diff = endDetect - startDetect;
+        
+        printAnomalyReport(results);
+        
+        std::stringstream ss;
+        ss << "Detection completed in " << diff.count() << "s";
+        printInfo(ss.str());
+        
+        clearAnomalyList(results);
+      }
+    }
+    // Help command
+    else if (strEquals(command, "help")) {
+      std::cout << "Available commands:" << std::endl;
+      std::cout << "  load <filepath>                          - Load CSV file"
+           << std::endl;
+      std::cout << "  query user <uid> <t_start> <t_end>       - User journey query"
+           << std::endl;
+      std::cout << "  query resource <rid> <t_start> <t_end>   - Resource journey "
+              "query"
+           << std::endl;
+      std::cout << "  top resources <t_start> <t_end>          - Top resources by "
+              "count"
+           << std::endl;
+      std::cout << "  detect                                   - Run anomaly detection"
+           << std::endl;
+      std::cout << "  help                                     - Show this help "
+              "message"
+           << std::endl;
+      std::cout << "  exit                                     - Exit program"
+           << std::endl;
+    }
+    // Exit command
+    else if (strEquals(command, "exit")) {
+      printInfo("Memory freed. Goodbye.");
+      if (argv != nullptr) {
+        delete[] argv;
+      }
+      // Clear indexes
+      if (indexMgr.isBuilt) {
+        clearAllIndexes(indexMgr);
+      }
+      clear(store);
+      break;
+    }
+    // Unknown command
+    else {
+      printError("Unknown command: " + command);
+    }
+
+    if (argv != nullptr) {
+      delete[] argv;
+    }
+  }
+
+  // Make sure store is cleaned up
+  if (store.count > 0) {
+    clear(store);
+  }
+
+  return 0;
 }
