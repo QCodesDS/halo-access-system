@@ -20,11 +20,9 @@
  * @brief  Cấu trúc quản lý tập hợp toàn bộ các loại chỉ mục trong hệ thống.
  */
 struct IndexManager {
-  HashIndex hashIdx; ///< Hệ thống chỉ mục băm đa chiều (User, Device, Resource)
-  SortedIndex
-      sortedIdx; ///< Chỉ mục mảng con trỏ sắp xếp tăng dần theo mốc thời gian
-  bool isBuilt; ///< Cờ đánh dấu trạng thái các chỉ mục đã được xây dựng thành
-                ///< công hay chưa
+    HashIndex hashIdx;      ///< Hệ thống chỉ mục băm đa chiều (User, Device, Resource)
+    SortedIndex sortedIdx;  ///< Chỉ mục mảng con trỏ sắp xếp tăng dần theo mốc thời gian
+    bool isBuilt;           ///< Cờ đánh dấu trạng thái các chỉ mục đã được xây dựng thành công hay chưa
 };
 
 /**
@@ -36,13 +34,13 @@ struct IndexManager {
  * @param mgr Tham chiếu tới bộ quản lý chỉ mục cần nạp dữ liệu
  * @param store Kho dữ liệu log hệ thống nguồn
  */
-void buildAllIndexes(IndexManager &mgr, DataStore &store);
+void buildAllIndexes(IndexManager& mgr, DataStore& store);
 
 /**
  * @brief Xóa bỏ dữ liệu và giải phóng toàn bộ bộ nhớ của tất cả các chỉ mục
  * thành phần.
  * @param mgr Tham chiếu tới bộ quản lý chỉ mục cần giải phóng
  */
-void clearAllIndexes(IndexManager &mgr);
+void clearAllIndexes(IndexManager& mgr);
 
-#endif // INDEX_MANAGER_H
+#endif  // INDEX_MANAGER_H

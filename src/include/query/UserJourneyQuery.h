@@ -20,10 +20,9 @@
  * trình người dùng.
  */
 struct UserJourneyQuery {
-  std::string
-      userId; ///< Mã định danh duy nhất của người dùng cần điều tra hành trình
-  long long timeStart; ///< Mốc thời gian bắt đầu khoảng lọc (Unix Timestamp)
-  long long timeEnd;   ///< Mốc thời gian kết thúc khoảng lọc (Unix Timestamp)
+    std::string userId;   ///< Mã định danh duy nhất của người dùng cần điều tra hành trình
+    long long timeStart;  ///< Mốc thời gian bắt đầu khoảng lọc (Unix Timestamp)
+    long long timeEnd;    ///< Mốc thời gian kết thúc khoảng lọc (Unix Timestamp)
 };
 
 /**
@@ -38,7 +37,6 @@ struct UserJourneyQuery {
  * @param  sortedIdx Chỉ mục mảng đã sắp xếp (không sử dụng trực tiếp trong hàm
  * này)
  */
-void executeUserJourney(const UserJourneyQuery &q, const HashIndex &hashIdx,
-                        const SortedIndex &sortedIdx);
+void executeUserJourney(const UserJourneyQuery& q, const HashIndex& hashIdx, const SortedIndex& sortedIdx);
 
-#endif // USER_JOURNEY_QUERY_H
+#endif  // USER_JOURNEY_QUERY_H

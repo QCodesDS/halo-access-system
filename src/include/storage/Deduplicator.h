@@ -19,7 +19,7 @@ struct DataStore;
  * @param store DataStore cần xử lý (sẽ bị thay đổi trực tiếp)
  * @return Số lượng bản ghi bị loại bỏ
  */
-[[nodiscard]] int deduplicate(DataStore &store);
+[[nodiscard]] int deduplicate(DataStore& store);
 
 /**
  * @brief So sánh hai LogRecord có giống hệt nhau không.
@@ -27,6 +27,6 @@ struct DataStore;
  * @param r2 Bản ghi thứ hai
  * @return `true` nếu tất cả các trường đều bằng nhau
  */
-[[nodiscard]] bool recordsEqual(const LogRecord &r1, const LogRecord &r2);
+[[nodiscard]] bool recordsEqual(const LogRecord& r1, const LogRecord& r2);
 
-#endif // DEDUPLICATOR_H
+#endif  // DEDUPLICATOR_H

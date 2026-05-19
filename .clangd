@@ -6,7 +6,17 @@ CompileFlags:
     - "-fparse-all-comments"
   Remove:
     - "-Wconversion"
-  CompilationDatabase: .
+  QueryDriver:
+    - "C:/msys64/mingw64/bin/g++.exe"
 
 Index:
   Background: Build
+
+Style:
+  BasedOnStyle: Chromium
+  IndentWidth: 4
+  UseTab: Never
+  ColumnLimit: 80
+  AllowShortBlocksOnASingleLine: Never
+  AllowShortFunctionsOnASingleLine: None
+  FixNamespaceComments: true

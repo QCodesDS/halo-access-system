@@ -23,7 +23,7 @@
  * @note Tiêu chí: Một người dùng xuất hiện ở 2 vị trí địa lý khác nhau trong
  * vòng 120 phút.
  */
-void detectImpossibleTravel(AnomalyList &results, const HashIndex &hashIdx);
+void detectImpossibleTravel(AnomalyList& results, const HashIndex& hashIdx);
 
 /**
  * @brief Phát hiện hành vi thay đổi vị trí liên tục (Location churning).
@@ -33,6 +33,6 @@ void detectImpossibleTravel(AnomalyList &results, const HashIndex &hashIdx);
  * @note Tiêu chí: Người dùng thay đổi vị trí liên tiếp > 3 lần trong khung thời
  * gian 60 phút.
  */
-void detectLocationChurning(AnomalyList &results, const HashIndex &hashIdx);
+void detectLocationChurning(AnomalyList& results, const HashIndex& hashIdx);
 
-#endif // BEHAVIOR_DETECTOR_H
+#endif  // BEHAVIOR_DETECTOR_H

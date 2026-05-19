@@ -21,14 +21,14 @@
  * @param outCount Số lượng token sau khi tách (được gán giá trị)
  * @return Mảng con trỏ chứa các token. Trả về `nullptr` nếu chuỗi rỗng.
  */
-std::string *split(const std::string &s, char delim, int &outCount);
+std::string* split(const std::string& s, char delim, int& outCount);
 
 /**
  * @brief Loại bỏ khoảng trắng (space và tab) ở đầu và cuối chuỗi.
  * @param s Chuỗi đầu vào
  * @return Chuỗi đã được trim
  */
-std::string trim(const std::string &s);
+std::string trim(const std::string& s);
 
 /**
  * @brief So sánh hai chuỗi có phân biệt hoa thường.
@@ -36,6 +36,6 @@ std::string trim(const std::string &s);
  * @param b Chuỗi thứ hai
  * @return `true` nếu hai chuỗi giống hệt nhau
  */
-bool strEquals(const std::string &a, const std::string &b);
+bool strEquals(const std::string& a, const std::string& b);
 
-#endif // STRING_UTILS_H
+#endif  // STRING_UTILS_H

@@ -29,4 +29,4 @@ bool isOffHours(long long epoch);
  */
 int getHourUTC(long long epoch);
 
-#endif // TIME_UTILS_H
+#endif  // TIME_UTILS_H

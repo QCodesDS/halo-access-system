@@ -20,9 +20,9 @@
  * tài nguyên.
  */
 struct ResourceJourneyQuery {
-  std::string resourceId; ///< Mã định danh duy nhất của tài nguyên cần truy vấn
-  long long timeStart;    ///< Mốc thời gian bắt đầu khoảng lọc (Unix Timestamp)
-  long long timeEnd; ///< Mốc thời gian kết thúc khoảng lọc (Unix Timestamp)
+    std::string resourceId;  ///< Mã định danh duy nhất của tài nguyên cần truy vấn
+    long long timeStart;     ///< Mốc thời gian bắt đầu khoảng lọc (Unix Timestamp)
+    long long timeEnd;       ///< Mốc thời gian kết thúc khoảng lọc (Unix Timestamp)
 };
 
 /**
@@ -37,8 +37,6 @@ struct ResourceJourneyQuery {
  * @param  sortedIdx Chỉ mục mảng đã sắp xếp (không sử dụng trực tiếp trong hàm
  * này)
  */
-void executeResourceJourney(const ResourceJourneyQuery &q,
-                            const HashIndex &hashIdx,
-                            const SortedIndex &sortedIdx);
+void executeResourceJourney(const ResourceJourneyQuery& q, const HashIndex& hashIdx, const SortedIndex& sortedIdx);
 
-#endif // RESOURCE_JOURNEY_QUERY_H
+#endif  // RESOURCE_JOURNEY_QUERY_H

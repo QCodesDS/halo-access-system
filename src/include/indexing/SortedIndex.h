@@ -20,9 +20,8 @@
  * gian.
  */
 struct SortedIndex {
-  LogRecord *
-      *records; ///< Mảng động chứa các con trỏ trỏ tới LogRecord (Đã sắp xếp)
-  int count;    ///< Tổng số lượng con trỏ bản ghi có trong chỉ mục
+    LogRecord** records;  ///< Mảng động chứa các con trỏ trỏ tới LogRecord (Đã sắp xếp)
+    int count;            ///< Tổng số lượng con trỏ bản ghi có trong chỉ mục
 };
 
 /**
@@ -32,7 +31,7 @@ struct SortedIndex {
  * liệu
  * @param store Kho lưu trữ bản ghi gốc nguồn
  */
-void buildSortedIndex(SortedIndex &idx, DataStore &store);
+void buildSortedIndex(SortedIndex& idx, DataStore& store);
 
 /**
  * @brief Thuật toán sắp xếp trộn đệ quy (Merge Sort) sắp xếp các con trỏ bản
@@ -41,7 +40,7 @@ void buildSortedIndex(SortedIndex &idx, DataStore &store);
  * @param left Chỉ mục phần tử đầu tiên của phân vùng đang xét
  * @param right Chỉ mục phần tử cuối cùng của phân vùng đang xét
  */
-void mergeSort(LogRecord **arr, int left, int right);
+void mergeSort(LogRecord** arr, int left, int right);
 
 /**
  * @brief Hàm bổ trợ trộn hai phân vùng đã sắp xếp thành một mảng con hợp nhất
@@ -51,7 +50,7 @@ void mergeSort(LogRecord **arr, int left, int right);
  * @param mid Chỉ mục ranh giới giữa hai phân vùng
  * @param right Chỉ mục kết thúc phân vùng phải
  */
-void merge(LogRecord **arr, int left, int mid, int right);
+void merge(LogRecord** arr, int left, int mid, int right);
 
 /**
  * @brief Tìm kiếm nhị phân vị trí bản ghi đầu tiên có nhãn thời gian lớn hơn
@@ -61,7 +60,7 @@ void merge(LogRecord **arr, int left, int mid, int right);
  * @return Vị trí index đầu tiên thỏa mãn trong mảng, hoặc trả về giá trị
  * `count` nếu tất cả bản ghi đều < t
  */
-int binarySearchStart(const SortedIndex &idx, long long t);
+int binarySearchStart(const SortedIndex& idx, long long t);
 
 /**
  * @brief Tìm kiếm nhị phân vị trí bản ghi cuối cùng có nhãn thời gian nhỏ hơn
@@ -71,7 +70,7 @@ int binarySearchStart(const SortedIndex &idx, long long t);
  * @return Vị trí index cuối cùng thỏa mãn trong mảng, hoặc trả về `-1` nếu tất
  * cả bản ghi đều > t
  */
-int binarySearchEnd(const SortedIndex &idx, long long t);
+int binarySearchEnd(const SortedIndex& idx, long long t);
 
 /**
  * @brief Giải phóng cấu trúc mảng con trỏ của chỉ mục (Không xóa thực thể
@@ -80,6 +79,6 @@ int binarySearchEnd(const SortedIndex &idx, long long t);
  * liệu chính DataStore.
  * @param idx Tham chiếu tới cấu trúc chỉ mục cần xóa
  */
-void clearSortedIndex(SortedIndex &idx);
+void clearSortedIndex(SortedIndex& idx);
 
-#endif // SORTED_INDEX_H
+#endif  // SORTED_INDEX_H

@@ -17,7 +17,7 @@ cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release
 
 # Bước 3: Thực thi chương trình
-./release/bin/halo
+.\release\bin\halo.exe
 ```
 
 ## Cấu trúc thư mục

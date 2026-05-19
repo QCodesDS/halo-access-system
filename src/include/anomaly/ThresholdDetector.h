@@ -24,7 +24,7 @@
  * @note Tiêu chí: Một tài khoản đăng nhập thành công/thao tác trên > 3 thiết bị
  * khác nhau trong 1 giờ.
  */
-void detectMultiDeviceLogin(AnomalyList &results, const HashIndex &hashIdx);
+void detectMultiDeviceLogin(AnomalyList& results, const HashIndex& hashIdx);
 
 /**
  * @brief Phát hiện chuỗi đăng nhập thất bại liên tiếp (Consecutive failed
@@ -34,8 +34,7 @@ void detectMultiDeviceLogin(AnomalyList &results, const HashIndex &hashIdx);
  * @param hashIdx Chỉ mục băm chứa thông tin phân loại log hệ thống
  * @note Tiêu chí: Tài khoản có chuỗi FAILED_LOGIN liên tiếp vượt quá 5 lần.
  */
-void detectConsecutiveFailedLogin(AnomalyList &results,
-                                  const HashIndex &hashIdx);
+void detectConsecutiveFailedLogin(AnomalyList& results, const HashIndex& hashIdx);
 
 /**
  * @brief Phát hiện thiết bị khai thác tài nguyên mật độ cao (Resource flood).
@@ -45,7 +44,7 @@ void detectConsecutiveFailedLogin(AnomalyList &results,
  * @note Tiêu chí: Một thiết bị gửi yêu cầu truy cập > 20 tài nguyên định danh
  * khác nhau trong 30 phút.
  */
-void detectResourceFlood(AnomalyList &results, const HashIndex &hashIdx);
+void detectResourceFlood(AnomalyList& results, const HashIndex& hashIdx);
 
 /**
  * @brief Phát hiện hành vi truy cập hệ thống ngoài giờ làm việc (Off-hours
@@ -56,6 +55,6 @@ void detectResourceFlood(AnomalyList &results, const HashIndex &hashIdx);
  * @note Tiêu chí: Phát hiện log phát sinh ngoài ca làm việc tiêu chuẩn (8:00 -
  * 18:00 UTC).
  */
-void detectOffHoursAccess(AnomalyList &results, const DataStore &store);
+void detectOffHoursAccess(AnomalyList& results, const DataStore& store);
 
-#endif // THRESHOLD_DETECTOR_H
+#endif  // THRESHOLD_DETECTOR_H

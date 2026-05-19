@@ -23,14 +23,13 @@
  * @param store Cơ sở dữ liệu lưu trữ log hệ thống dạng tuần tự
  * @param hashIdx Chỉ mục băm hỗ trợ truy cập nhanh theo User/Device
  */
-void runAnomalyDetection(AnomalyList &results, const DataStore &store,
-                         const HashIndex &hashIdx);
+void runAnomalyDetection(AnomalyList& results, const DataStore& store, const HashIndex& hashIdx);
 
 /**
  * @brief In báo cáo tổng hợp thông tin bất thường ra màn hình theo định dạng
  * chuẩn.
  * @param results Danh sách các bản ghi bất thường cần kết xuất báo cáo
  */
-void printAnomalyReport(const AnomalyList &results);
+void printAnomalyReport(const AnomalyList& results);
 
-#endif // ANOMALY_ENGINE_H
+#endif  // ANOMALY_ENGINE_H

@@ -285,4 +285,3 @@
 
 - Tốc độ xử lý của hàm in báo cáo tăng hàng ngàn lần (từ vài phút xuống dưới 0.1 giây đối với gần 900,000 cảnh báo bất thường).
 - Không có thay đổi nào ảnh hưởng đến tính đúng đắn của logic phát hiện bất thường (Anomaly Detection logic).
-

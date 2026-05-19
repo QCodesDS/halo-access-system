@@ -22,7 +22,7 @@
  * @note Tiêu chí: Một phiên làm việc duy trì liên tục vượt quá 8 tiếng
  * (MAX_SESSION_HOURS).
  */
-void detectLongSession(AnomalyList &results, const SessionList &sessionList);
+void detectLongSession(AnomalyList& results, const SessionList& sessionList);
 
 /**
  * @brief Phát hiện hành vi khởi tạo phiên liên tục (Session flood).
@@ -32,7 +32,7 @@ void detectLongSession(AnomalyList &results, const SessionList &sessionList);
  * @note Tiêu chí: Một người dùng khởi tạo > 5 phiên làm việc trong vòng 60
  * phút.
  */
-void detectSessionFlood(AnomalyList &results, const SessionList &sessionList);
+void detectSessionFlood(AnomalyList& results, const SessionList& sessionList);
 
 /**
  * @brief Phát hiện chuỗi thao tác thực thi nguy hiểm (Dangerous sequence).
@@ -42,7 +42,6 @@ void detectSessionFlood(AnomalyList &results, const SessionList &sessionList);
  * @note Tiêu chí: Xuất hiện hành vi DOWNLOAD trong vòng 10 phút ngay sau khi có
  * ADMIN_ACTION.
  */
-void detectDangerousSequence(AnomalyList &results,
-                             const SessionList &sessionList);
+void detectDangerousSequence(AnomalyList& results, const SessionList& sessionList);
 
-#endif // SESSION_DETECTOR_H
+#endif  // SESSION_DETECTOR_H

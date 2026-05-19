@@ -4,9 +4,11 @@
  */
 
 #include "indexing/IndexManager.h"
+
 #include <ctime>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+
 
 // ================================================================================
 //  Helper functions (Nội bộ)
@@ -17,26 +19,23 @@
  * @param  recordCount Tổng số lượng bản ghi hiện có trong kho dữ liệu thô
  * @return Kích thước số lượng bucket tối ưu cho thuật toán băm tránh va chạm
  */
-static int selectTableSize(int recordCount)
-{
+static int selectTableSize(int recordCount) {
     if (recordCount <= 0)
-        return 20011; // Số nguyên tố tối thiểu mặc định
+        return 20011;  // Số nguyên tố tối thiểu mặc định
     else if (recordCount <= 10000)
-        return 20011; // Số nguyên tố phù hợp cho quy mô dưới ~10k bản ghi
+        return 20011;  // Số nguyên tố phù hợp cho quy mô dưới ~10k bản ghi
     else if (recordCount <= 1000000)
-        return 1999993; // Số nguyên tố lớn phù hợp cho quy mô đến ~1 triệu bản ghi
+        return 1999993;  // Số nguyên tố lớn phù hợp cho quy mô đến ~1 triệu bản ghi
     else
-        return 1999993 + (recordCount / 100000); // Mở rộng tuyến tính khi dữ liệu cực lớn
+        return 1999993 + (recordCount / 100000);  // Mở rộng tuyến tính khi dữ liệu cực lớn
 }
 
 // ================================================================================
 //  Public functions
 // ================================================================================
 
-void buildAllIndexes(IndexManager &mgr, DataStore &store)
-{
-    if (store.count == 0)
-    {
+void buildAllIndexes(IndexManager& mgr, DataStore& store) {
+    if (store.count == 0) {
         mgr.isBuilt = false;
         return;
     }
@@ -63,8 +62,7 @@ void buildAllIndexes(IndexManager &mgr, DataStore &store)
     std::cout << "[INFO] Indexes built in " << std::fixed << std::setprecision(2) << elapsed << "s" << std::endl;
 }
 
-void clearAllIndexes(IndexManager &mgr)
-{
+void clearAllIndexes(IndexManager& mgr) {
     clearHashIndex(mgr.hashIdx);
     clearSortedIndex(mgr.sortedIdx);
     mgr.isBuilt = false;

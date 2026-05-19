@@ -19,8 +19,8 @@
  * xuất hiện của tài nguyên.
  */
 struct CountEntry {
-  std::string resourceId; ///< Mã định danh duy nhất của tài nguyên
-  int count; ///< Số lần tài nguyên được truy cập trong khoảng thời gian xét
+    std::string resourceId;  ///< Mã định danh duy nhất của tài nguyên
+    int count;               ///< Số lần tài nguyên được truy cập trong khoảng thời gian xét
 };
 
 /**
@@ -35,7 +35,6 @@ struct CountEntry {
  * @param  topN Số lượng tài nguyên tối đa muốn hiển thị trong bảng xếp hạng
  * (Mặc định là 10)
  */
-void executeTopResources(long long timeStart, long long timeEnd,
-                         const SortedIndex &sortedIdx, int topN = 10);
+void executeTopResources(long long timeStart, long long timeEnd, const SortedIndex& sortedIdx, int topN = 10);
 
-#endif // TOP_RESOURCE_QUERY_H
+#endif  // TOP_RESOURCE_QUERY_H

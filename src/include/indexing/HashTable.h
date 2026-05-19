@@ -10,9 +10,9 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
-#include "models/LogRecord.h"
 #include <string>
 
+#include "models/LogRecord.h"
 
 /**
  * @struct HashNode
@@ -20,12 +20,11 @@
  * băm (Separate Chaining).
  */
 struct HashNode {
-  std::string key; ///< Khóa băm (Dạng chuỗi ký tự định danh)
-  LogRecord *
-      *values;    ///< Mảng động chứa các con trỏ quản lý LogRecord trùng khóa
-  int count;      ///< Số lượng phần tử hiện tại có trong mảng values
-  int capacity;   ///< Sức chứa tối đa hiện tại của mảng values
-  HashNode *next; ///< Con trỏ trỏ đến nút kế tiếp trong chuỗi va chạm
+    std::string key;     ///< Khóa băm (Dạng chuỗi ký tự định danh)
+    LogRecord** values;  ///< Mảng động chứa các con trỏ quản lý LogRecord trùng khóa
+    int count;           ///< Số lượng phần tử hiện tại có trong mảng values
+    int capacity;        ///< Sức chứa tối đa hiện tại của mảng values
+    HashNode* next;      ///< Con trỏ trỏ đến nút kế tiếp trong chuỗi va chạm
 };
 
 /**
@@ -33,11 +32,11 @@ struct HashNode {
  * @brief  Cấu trúc thực thể bảng băm quản lý danh sách các bucket.
  */
 struct HashTable {
-  HashNode **buckets; ///< Mảng các con trỏ bucket (mỗi bucket quản lý một danh
-                      ///< sách liên kết)
-  int tableSize; ///< Tổng số lượng bucket của bảng băm
-  int totalKeys; ///< Tổng số lượng khóa duy nhất (Unique keys) hiện có trong
-                 ///< bảng băm
+    HashNode** buckets;  ///< Mảng các con trỏ bucket (mỗi bucket quản lý một danh
+                         ///< sách liên kết)
+    int tableSize;       ///< Tổng số lượng bucket của bảng băm
+    int totalKeys;       ///< Tổng số lượng khóa duy nhất (Unique keys) hiện có trong
+                         ///< bảng băm
 };
 
 /**
@@ -45,7 +44,7 @@ struct HashTable {
  * @param ht Tham chiếu tới cấu trúc bảng băm cần khởi tạo
  * @param tableSize Số lượng ô lưu trữ (bucket) cấp phát cho bảng băm
  */
-void initHashTable(HashTable &ht, int tableSize);
+void initHashTable(HashTable& ht, int tableSize);
 
 /**
  * @brief Thêm một con trỏ bản ghi LogRecord vào bảng băm theo khóa chỉ định.
@@ -53,7 +52,7 @@ void initHashTable(HashTable &ht, int tableSize);
  * @param key Chuỗi ký tự định danh dùng làm khóa phân loại
  * @param record Con trỏ vùng nhớ chứa bản ghi log hệ thống
  */
-void insertHash(HashTable &ht, const std::string &key, LogRecord *record);
+void insertHash(HashTable& ht, const std::string& key, LogRecord* record);
 
 /**
  * @brief Tìm kiếm và lấy ra danh sách toàn bộ bản ghi log tương ứng với khóa.
@@ -63,15 +62,14 @@ void insertHash(HashTable &ht, const std::string &key, LogRecord *record);
  * @return Mảng các con trỏ trỏ đến các LogRecord hợp lệ, hoặc trả về nullptr
  * nếu khóa không tồn tại
  */
-LogRecord **lookupHash(const HashTable &ht, const std::string &key,
-                       int &outCount);
+LogRecord** lookupHash(const HashTable& ht, const std::string& key, int& outCount);
 
 /**
  * @brief Giải phóng toàn bộ các nút liên kết và các mảng động lưu trữ giá trị
  * trong bảng băm.
  * @param ht Tham chiếu tới bảng băm cần giải phóng bộ nhớ
  */
-void clearHashTable(HashTable &ht);
+void clearHashTable(HashTable& ht);
 
 /**
  * @brief Hàm băm cuốn đa thức (Polynomial Rolling Hash Function) chuyển đổi
@@ -80,6 +78,6 @@ void clearHashTable(HashTable &ht);
  * @param tableSize Giới hạn trên của chỉ mục trả về (Kích thước bảng băm)
  * @return Giá trị băm nguyên nằm trong khoảng [0, tableSize - 1]
  */
-int hashFunction(const std::string &key, int tableSize);
+int hashFunction(const std::string& key, int tableSize);
 
-#endif // HASH_TABLE_H
+#endif  // HASH_TABLE_H

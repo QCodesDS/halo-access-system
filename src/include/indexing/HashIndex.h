@@ -19,11 +19,10 @@
  * @brief  Cấu trúc quản lý tập hợp các bảng băm phục vụ lập chỉ mục đa chiều.
  */
 struct HashIndex {
-  HashTable byUser;   ///< Bảng băm lập chỉ mục theo mã người dùng (user_id)
-  HashTable byDevice; ///< Bảng băm lập chỉ mục theo mã thiết bị (device_id)
-  HashTable
-      byResource; ///< Bảng băm lập chỉ mục theo mã tài nguyên (resource_id)
-  int tableSize; ///< Kích thước số lượng bucket áp dụng chung cho cả 3 bảng băm
+    HashTable byUser;      ///< Bảng băm lập chỉ mục theo mã người dùng (user_id)
+    HashTable byDevice;    ///< Bảng băm lập chỉ mục theo mã thiết bị (device_id)
+    HashTable byResource;  ///< Bảng băm lập chỉ mục theo mã tài nguyên (resource_id)
+    int tableSize;         ///< Kích thước số lượng bucket áp dụng chung cho cả 3 bảng băm
 };
 
 /**
@@ -32,7 +31,7 @@ struct HashIndex {
  * @param store Kho lưu trữ bản ghi log nguồn
  * @param tableSize Kích thước mảng bucket mong muốn cho các bảng băm nội bộ
  */
-void buildHashIndex(HashIndex &idx, DataStore &store, int tableSize);
+void buildHashIndex(HashIndex& idx, DataStore& store, int tableSize);
 
 /**
  * @brief Truy vấn danh sách các bản ghi log dựa trên mã định danh người dùng
@@ -43,8 +42,7 @@ void buildHashIndex(HashIndex &idx, DataStore &store, int tableSize);
  * @return Mảng các con trỏ trỏ đến LogRecord kết quả, trả về nullptr nếu không
  * tìm thấy
  */
-LogRecord **getByUser(const HashIndex &idx, const std::string &userId,
-                      int &outCount);
+LogRecord** getByUser(const HashIndex& idx, const std::string& userId, int& outCount);
 
 /**
  * @brief Truy vấn danh sách các bản ghi log dựa trên mã định danh thiết bị
@@ -55,8 +53,7 @@ LogRecord **getByUser(const HashIndex &idx, const std::string &userId,
  * @return Mảng các con trỏ trỏ đến LogRecord kết quả, trả về nullptr nếu không
  * tìm thấy
  */
-LogRecord **getByDevice(const HashIndex &idx, const std::string &deviceId,
-                        int &outCount);
+LogRecord** getByDevice(const HashIndex& idx, const std::string& deviceId, int& outCount);
 
 /**
  * @brief Truy vấn danh sách các bản ghi log dựa trên mã định danh tài nguyên
@@ -67,14 +64,13 @@ LogRecord **getByDevice(const HashIndex &idx, const std::string &deviceId,
  * @return Mảng các con trỏ trỏ đến LogRecord kết quả, trả về nullptr nếu không
  * tìm thấy
  */
-LogRecord **getByResource(const HashIndex &idx, const std::string &resourceId,
-                          int &outCount);
+LogRecord** getByResource(const HashIndex& idx, const std::string& resourceId, int& outCount);
 
 /**
  * @brief Xóa bỏ và giải phóng toàn bộ tài nguyên, bộ nhớ của cấu trúc chỉ mục
  * băm đa chiều.
  * @param idx Tham chiếu tới cấu trúc chỉ mục băm cần thu hồi
  */
-void clearHashIndex(HashIndex &idx);
+void clearHashIndex(HashIndex& idx);
 
-#endif // HASH_INDEX_H
+#endif  // HASH_INDEX_H

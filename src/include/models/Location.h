@@ -16,22 +16,22 @@
  * @brief Các quốc gia / khu vực địa lý được hỗ trợ trong hệ thống.
  */
 enum Location {
-  US,              ///< Hoa Kỳ
-  VN,              ///< Việt Nam
-  JP,              ///< Nhật Bản
-  KR,              ///< Hàn Quốc
-  SG,              ///< Singapore
-  CN,              ///< Trung Quốc
-  DE,              ///< Đức
-  FR,              ///< Pháp
-  UK,              ///< Vương quốc Anh
-  AU,              ///< Úc
-  CA,              ///< Canada
-  IN,              ///< Ấn Độ
-  BR,              ///< Brazil
-  RU,              ///< Nga
-  TH,              ///< Thái Lan
-  UNKNOWN_LOCATION ///< Không xác định
+    US,               ///< Hoa Kỳ
+    VN,               ///< Việt Nam
+    JP,               ///< Nhật Bản
+    KR,               ///< Hàn Quốc
+    SG,               ///< Singapore
+    CN,               ///< Trung Quốc
+    DE,               ///< Đức
+    FR,               ///< Pháp
+    UK,               ///< Vương quốc Anh
+    AU,               ///< Úc
+    CA,               ///< Canada
+    IN,               ///< Ấn Độ
+    BR,               ///< Brazil
+    RU,               ///< Nga
+    TH,               ///< Thái Lan
+    UNKNOWN_LOCATION  ///< Không xác định
 };
 
 /**
@@ -39,7 +39,7 @@ enum Location {
  * @param s Chuỗi mã quốc gia (ví dụ: "VN", "US", "JP")
  * @return Location tương ứng, UNKNOWN_LOCATION nếu không khớp
  */
-Location parseLocation(const std::string &s);
+Location parseLocation(const std::string& s);
 
 /**
  * @brief Chuyển Location thành chuỗi string.
@@ -48,4 +48,4 @@ Location parseLocation(const std::string &s);
  */
 std::string locationToString(Location loc);
 
-#endif // LOCATION_H
+#endif  // LOCATION_H

@@ -2,7 +2,7 @@
  * @file        QueryEngine.h
  * @brief       Định nghĩa bộ điều phối và phân tích cú pháp truy vấn (Query Engine) cho hệ thống log.
  *
- * Nhận chuỗi lệnh đầu vào từ giao diện dòng lệnh, phân tích các tham số (Khóa định danh, 
+ * Nhận chuỗi lệnh đầu vào từ giao diện dòng lệnh, phân tích các tham số (Khóa định danh,
  * khoảng thời gian) và chuyển hướng xử lý đến các module truy vấn hành trình hoặc thống kê tương ứng.
  */
 
@@ -10,6 +10,7 @@
 #define QUERY_ENGINE_H
 
 #include <string>
+
 #include "indexing/HashIndex.h"
 #include "indexing/SortedIndex.h"
 
@@ -23,6 +24,6 @@
  * @param  hashIdx Hệ thống chỉ mục băm đa chiều phục vụ tìm kiếm theo khóa
  * @param  sortedIdx Chỉ mục mảng con trỏ đã sắp xếp phục vụ lọc khoảng thời gian
  */
-void executeQuery(const std::string &input, const HashIndex &hashIdx, const SortedIndex &sortedIdx);
+void executeQuery(const std::string& input, const HashIndex& hashIdx, const SortedIndex& sortedIdx);
 
-#endif // QUERY_ENGINE_H
+#endif  // QUERY_ENGINE_H

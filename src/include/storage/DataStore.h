@@ -19,11 +19,10 @@
  * @note   DataStore sở hữu (owns) các LogRecord* được push vào.
  *         Người dùng không được delete thủ công các record.
  */
-struct DataStore
-{
-    LogRecord **records; ///< Mảng con trỏ đến LogRecord
-    int capacity;        ///< Dung lượng hiện tại của mảng
-    int count;           ///< Số lượng bản ghi thực tế
+struct DataStore {
+    LogRecord** records;  ///< Mảng con trỏ đến LogRecord
+    int capacity;         ///< Dung lượng hiện tại của mảng
+    int count;            ///< Số lượng bản ghi thực tế
 
     /// Constructor mặc định (khởi tạo rỗng)
     DataStore();
@@ -34,7 +33,7 @@ struct DataStore
  * @param store DataStore cần khởi tạo
  * @param initialCapacity Dung lượng khởi tạo (mặc định 1000)
  */
-void initDataStore(DataStore &store, int initialCapacity = 1000);
+void initDataStore(DataStore& store, int initialCapacity = 1000);
 
 /**
  * @brief Thêm một LogRecord vào kho lưu trữ.
@@ -44,7 +43,7 @@ void initDataStore(DataStore &store, int initialCapacity = 1000);
  * @param store DataStore đích
  * @param r Con trỏ đến LogRecord cần thêm
  */
-void push(DataStore &store, LogRecord *r);
+void push(DataStore& store, LogRecord* r);
 
 /**
  * @brief Lấy bản ghi tại vị trí index.
@@ -52,20 +51,20 @@ void push(DataStore &store, LogRecord *r);
  * @param i Chỉ số
  * @return Con trỏ đến LogRecord, hoặc `nullptr` nếu index không hợp lệ
  */
-[[nodiscard]] LogRecord *get(const DataStore &store, int i);
+[[nodiscard]] LogRecord* get(const DataStore& store, int i);
 
 /**
  * @brief Trả về số lượng bản ghi hiện tại.
  * @param store DataStore
  * @return Số lượng LogRecord
  */
-[[nodiscard]] int size(const DataStore &store);
+[[nodiscard]] int size(const DataStore& store);
 
 /**
  * @brief Xóa toàn bộ dữ liệu và giải phóng bộ nhớ.
  * @param store DataStore cần dọn dẹp
  */
-void clear(DataStore &store);
+void clear(DataStore& store);
 
 /**
  * @brief Trả về mảng con trỏ để duyệt hoặc sắp xếp.
@@ -73,6 +72,6 @@ void clear(DataStore &store);
  * @param store DataStore
  * @return Mảng con trỏ LogRecord*
  */
-[[nodiscard]] LogRecord **getAll(const DataStore &store);
+[[nodiscard]] LogRecord** getAll(const DataStore& store);
 
-#endif // DATASTORE_H
+#endif  // DATASTORE_H

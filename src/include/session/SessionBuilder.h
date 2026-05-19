@@ -20,16 +20,12 @@
  * người dùng.
  */
 struct UserSession {
-  std::string userId; ///< Mã định danh duy nhất của người dùng sở hữu phiên
-  long long
-      startTime; ///< Nhãn thời gian bắt đầu phiên hoạt động (Unix Timestamp)
-  long long
-      endTime; ///< Nhãn thời gian kết thúc phiên hoạt động (Unix Timestamp)
-
-  LogRecord **events; ///< Mảng động chứa các con trỏ trỏ đến các sự kiện thuộc
-                      ///< phiên này
-  int eventCount;    ///< Số lượng sự kiện hiện có trong phiên
-  int eventCapacity; ///< Sức chứa tối đa hiện tại của mảng sự kiện
+    std::string userId;   ///< Mã định danh duy nhất của người dùng sở hữu phiên
+    long long startTime;  ///< Nhãn thời gian bắt đầu phiên hoạt động (Unix Timestamp)
+    long long endTime;    ///< Nhãn thời gian kết thúc phiên hoạt động (Unix Timestamp)
+    LogRecord** events;   ///< Mảng động chứa các con trỏ trỏ đến các sự kiện thuộc phiên này
+    int eventCount;       ///< Số lượng sự kiện hiện có trong phiên
+    int eventCapacity;    ///< Sức chứa tối đa hiện tại của mảng sự kiện
 };
 
 /**
@@ -38,10 +34,9 @@ struct UserSession {
  * toàn bộ người dùng.
  */
 struct SessionList {
-  UserSession **
-      sessions; ///< Mảng động chứa các con trỏ quản lý các thực thể UserSession
-  int count;    ///< Tổng số lượng phiên hiện có trong danh sách
-  int capacity; ///< Sức chứa tối đa hiện tại của mảng danh sách phiên
+    UserSession** sessions;  ///< Mảng động chứa các con trỏ quản lý các thực thể UserSession
+    int count;               ///< Tổng số lượng phiên hiện có trong danh sách
+    int capacity;            ///< Sức chứa tối đa hiện tại của mảng danh sách phiên
 };
 
 /**
@@ -54,7 +49,7 @@ struct SessionList {
  * @param  hashIdx Hệ thống chỉ mục băm đa chiều đã được xây dựng hoàn chỉnh từ
  * trước
  */
-void buildSessions(SessionList &sessionList, const HashIndex &hashIdx);
+void buildSessions(SessionList& sessionList, const HashIndex& hashIdx);
 
 /**
  * @brief  Giải phóng toàn bộ vùng nhớ cấp phát động cho danh sách phiên và các
@@ -64,6 +59,6 @@ void buildSessions(SessionList &sessionList, const HashIndex &hashIdx);
  * DataStore.
  * @param  sessionList Tham chiếu tới danh sách phiên cần giải phóng bộ nhớ
  */
-void clearSessions(SessionList &sessionList);
+void clearSessions(SessionList& sessionList);
 
-#endif // SESSION_BUILDER_H
+#endif  // SESSION_BUILDER_H
